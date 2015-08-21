@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TeamReady</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="button_event_new">New event</string>
+    <string name="button_task_new">New task</string>
+    <string name="button_story_new">New story</string>
+    <string name="button_measurement_new">New indicator measurement</string>
+</resources>
