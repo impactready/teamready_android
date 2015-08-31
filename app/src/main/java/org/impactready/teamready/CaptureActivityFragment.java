@@ -1,6 +1,5 @@
 package org.impactready.teamready;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -10,10 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-
-/**
- * A placeholder fragment containing a simple view.
- */
 public class CaptureActivityFragment extends Fragment {
 
     @Override
