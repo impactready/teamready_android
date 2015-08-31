@@ -1,16 +1,27 @@
 package org.impactready.teamready;
 
-import android.app.Activity;
+
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-public class CaptureActivity extends Activity {
+public class CaptureActivity extends FragmentActivity {
+    private CaptureActivityFragment captureFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        captureFragment = new CaptureActivityFragment();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.activity_container, captureFragment);
+        fragmentTransaction.commit();
+
         setContentView(R.layout.activity_capture);
     }
 
