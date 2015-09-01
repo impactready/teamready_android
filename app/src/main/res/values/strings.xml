@@ -7,5 +7,9 @@
     <string name="button_story_new">New story</string>
     <string name="button_measurement_new">New indicator measurement</string>
 
-    <string name="capture_button_height">66dp</string>
+    <string name="title_activity_form">FormActivity</string>
+
+    <string name="text_form_event_new_description">Description</string>
+
+
 </resources>

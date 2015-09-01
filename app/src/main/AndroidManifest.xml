@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FormActivity"
+            android:label="@string/title_activity_form" >
+        </activity>
     </application>
 
 </manifest>
