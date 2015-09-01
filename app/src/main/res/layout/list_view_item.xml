@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="70dp"
+    android:layout_height="57dp"
     android:paddingLeft="2dp"
-    android:paddingTop="1dp">
+    android:paddingTop="2dp">
 
     <ImageView
         android:id="@+id/item_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="fitXY"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dip"
@@ -24,7 +25,6 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/item_icon"
         android:gravity="center_vertical"
-        android:text="Example application"
         android:textSize="18sp" />
 
     <TextView
@@ -37,7 +37,6 @@
         android:layout_below="@id/item_first_line"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:text="Description"
         android:textSize="12sp" />
 
 

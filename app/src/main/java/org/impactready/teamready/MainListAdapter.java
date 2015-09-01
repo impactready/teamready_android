@@ -24,7 +24,7 @@ public class MainListAdapter extends ArrayAdapter<String> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_view_item, parent, false);
         TextView textView1 = (TextView) rowView.findViewById(R.id.item_first_line);
-        TextView textView2 = (TextView) rowView.findViewById(R.id.item_first_line);
+        TextView textView2 = (TextView) rowView.findViewById(R.id.item_second_line);
         //ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         textView1.setText(values[position][0]);
         textView2.setText(values[position][1]);

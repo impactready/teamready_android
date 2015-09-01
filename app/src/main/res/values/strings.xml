@@ -6,4 +6,6 @@
     <string name="button_task_new">New task</string>
     <string name="button_story_new">New story</string>
     <string name="button_measurement_new">New indicator measurement</string>
+
+    <string name="capture_button_height">66dp</string>
 </resources>
