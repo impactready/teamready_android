@@ -8,11 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainListAdapter extends ArrayAdapter<String> {
+public class MainListActivityAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[][] values;
 
-    public MainListAdapter(Context context, int layoutId, String[][] values, String[] keys) {
+    public MainListActivityAdapter(Context context, int layoutId, String[][] values, String[] keys) {
         super(context, layoutId, keys);
         this.context = context;
         this.values = values;

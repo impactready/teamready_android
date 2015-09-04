@@ -1,6 +1,7 @@
 package org.impactready.teamready;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class CaptureActivityFragment extends Fragment {
+public class MainCaptureActivityFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_capture, container, false);
+        View v = inflater.inflate(R.layout.fragment_main_capture, container, false);
 
         setUpButtons(v);
 
@@ -34,8 +35,9 @@ public class CaptureActivityFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CharSequence text = "Event!";
-                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), FormActivity.class);
+                        intent.putExtra("type", "event");
+                        startActivity(intent);
                     }
                 }
         );
@@ -44,8 +46,9 @@ public class CaptureActivityFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CharSequence text = "Task!";
-                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), FormActivity.class);
+                        intent.putExtra("type", "task");
+                        startActivity(intent);
                     }
                 }
         );
@@ -54,8 +57,9 @@ public class CaptureActivityFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CharSequence text = "Story!";
-                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), FormActivity.class);
+                        intent.putExtra("type", "story");
+                        startActivity(intent);
                     }
                 }
         );
@@ -64,8 +68,9 @@ public class CaptureActivityFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CharSequence text = "Measurement!";
-                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), FormActivity.class);
+                        intent.putExtra("type", "measurement");
+                        startActivity(intent);
                     }
                 }
         );
