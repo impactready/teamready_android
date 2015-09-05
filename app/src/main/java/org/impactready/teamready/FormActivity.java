@@ -1,6 +1,7 @@
 package org.impactready.teamready;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +18,11 @@ public class FormActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
 
-        CharSequence text = (CharSequence) getIntent().getStringExtra("name");
+        Intent intent = getIntent();
 
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        String text = (String) getIntent().getStringExtra("type");
+        Log.d(TAG, text);
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
