@@ -1,8 +1,8 @@
 package org.impactready.teamready;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,16 +13,30 @@ import android.widget.Toast;
 public class FormActivity extends Activity {
     private static final String TAG = "Form Activity";
 
+    private static final String EVENT = "event";
+    private static final String TASK = "task";
+    private static final String STORY = "story";
+    private static final String MEASUREMENT = "measurement";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
 
-        Intent intent = getIntent();
-
-        String text = (String) getIntent().getStringExtra("type");
+        String text = getIntent().getStringExtra("type");
         Log.d(TAG, text);
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (text.equals(EVENT)) {
+            getActionBar().setTitle("New event");
+            FormActivityEventFragment fragment = new FormActivityEventFragment();
+            fragmentTransaction.add(R.id.activity_form_container, fragment);
+            fragmentTransaction.commit();
+        }
+
+//        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     @Override

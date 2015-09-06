@@ -17,8 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FormActivity"
-            android:label="@string/title_activity_form" >
+            android:name=".FormActivity">
         </activity>
     </application>
 

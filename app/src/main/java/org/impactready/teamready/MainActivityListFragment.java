@@ -3,7 +3,7 @@ package org.impactready.teamready;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 
-public class MainListActivityFragment extends ListFragment {
+public class MainActivityListFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class MainListActivityFragment extends ListFragment {
                 {"Item 3a", "Item 3b"}
         };
 
-        setListAdapter(new MainListActivityAdapter(getActivity(), layout, items, keys));
+        setListAdapter(new MainActivityListAdapter(getActivity(), layout, items, keys));
     }
 
 }

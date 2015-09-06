@@ -8,15 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-public class MainCaptureActivityFragment extends Fragment {
+public class MainActivityCaptureFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_main_capture, container, false);
+        View v = inflater.inflate(R.layout.activity_main_fragment_capture, container, false);
 
         setUpButtons(v);
 
