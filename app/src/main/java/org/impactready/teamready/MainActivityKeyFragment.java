@@ -28,7 +28,7 @@ public class MainActivityKeyFragment extends Fragment {
         TextView apiKey = (TextView) v.findViewById(R.id.input_key_save);
 
         SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        apiKey.setText(settings.getString("apiKey", "Please set.."));
+        apiKey.setText(settings.getString("apiKey", ""));
     }
 
     public void setUpButtons(View view) {

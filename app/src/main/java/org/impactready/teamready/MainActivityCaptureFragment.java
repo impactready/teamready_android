@@ -26,7 +26,6 @@ public class MainActivityCaptureFragment extends Fragment {
         final Context context = getActivity().getApplicationContext();
 
         Button buttonNewEvent = (Button) view.findViewById(R.id.button_event_new);
-        Button buttonNewTask = (Button)  view.findViewById(R.id.button_task_new);
         Button buttonNewStory = (Button)  view.findViewById(R.id.button_story_new);
         Button buttonNewMeasurement = (Button) view.findViewById(R.id.button_measurement_new);
 
@@ -36,17 +35,6 @@ public class MainActivityCaptureFragment extends Fragment {
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
                         intent.putExtra("type", "event");
-                        startActivity(intent);
-                    }
-                }
-        );
-
-        buttonNewTask.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra("type", "task");
                         startActivity(intent);
                     }
                 }

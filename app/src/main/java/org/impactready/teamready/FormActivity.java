@@ -13,11 +13,6 @@ import android.widget.Toast;
 public class FormActivity extends Activity {
     private static final String TAG = "Form Activity";
 
-    private static final String EVENT = "event";
-    private static final String TASK = "task";
-    private static final String STORY = "story";
-    private static final String MEASUREMENT = "measurement";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,23 +24,18 @@ public class FormActivity extends Activity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (text.equals(EVENT)) {
-            getActionBar().setTitle("New " + EVENT);
+        if (text.equals(MainActivity.EVENT)) {
+            getActionBar().setTitle("New " + MainActivity.EVENT);
             FormActivityEventFragment fragment = new FormActivityEventFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
 
-        } else if (text.equals(TASK)) {
-            getActionBar().setTitle("New " + TASK);
-            FormActivityTaskFragment fragment = new FormActivityTaskFragment();
-            fragmentTransaction.add(R.id.activity_form_container, fragment);
-
-        } else if (text.equals(STORY)) {
-            getActionBar().setTitle("New " + STORY);
+        } else if (text.equals(MainActivity.STORY)) {
+            getActionBar().setTitle("New " + MainActivity.STORY);
             FormActivityStoryFragment fragment = new FormActivityStoryFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
 
-        } else if (text.equals(MEASUREMENT)) {
-            getActionBar().setTitle("New indicator " + MEASUREMENT);
+        } else if (text.equals(MainActivity.MEASUREMENT)) {
+            getActionBar().setTitle("New indicator " + MainActivity.MEASUREMENT);
             FormActivityMeasurementFragment fragment = new FormActivityMeasurementFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
         }
