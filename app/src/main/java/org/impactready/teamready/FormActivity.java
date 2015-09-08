@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 
-public class FormActivity extends Activity {
+public class FormActivity extends AppCompatActivity {
     private static final String TAG = "Form Activity";
 
     @Override
@@ -25,17 +26,17 @@ public class FormActivity extends Activity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         if (text.equals(MainActivity.EVENT)) {
-            getActionBar().setTitle("New " + MainActivity.EVENT);
+            getSupportActionBar().setTitle("New " + MainActivity.EVENT);
             FormActivityEventFragment fragment = new FormActivityEventFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
 
         } else if (text.equals(MainActivity.STORY)) {
-            getActionBar().setTitle("New " + MainActivity.STORY);
+            getSupportActionBar().setTitle("New " + MainActivity.STORY);
             FormActivityStoryFragment fragment = new FormActivityStoryFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
 
         } else if (text.equals(MainActivity.MEASUREMENT)) {
-            getActionBar().setTitle("New indicator " + MainActivity.MEASUREMENT);
+            getSupportActionBar().setTitle("New indicator " + MainActivity.MEASUREMENT);
             FormActivityMeasurementFragment fragment = new FormActivityMeasurementFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
         }
