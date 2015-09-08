@@ -30,11 +30,27 @@ public class FormActivity extends Activity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         if (text.equals(EVENT)) {
-            getActionBar().setTitle("New event");
+            getActionBar().setTitle("New " + EVENT);
             FormActivityEventFragment fragment = new FormActivityEventFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
-            fragmentTransaction.commit();
+
+        } else if (text.equals(TASK)) {
+            getActionBar().setTitle("New " + TASK);
+            FormActivityTaskFragment fragment = new FormActivityTaskFragment();
+            fragmentTransaction.add(R.id.activity_form_container, fragment);
+
+        } else if (text.equals(STORY)) {
+            getActionBar().setTitle("New " + STORY);
+            FormActivityStoryFragment fragment = new FormActivityStoryFragment();
+            fragmentTransaction.add(R.id.activity_form_container, fragment);
+
+        } else if (text.equals(MEASUREMENT)) {
+            getActionBar().setTitle("New indicator " + MEASUREMENT);
+            FormActivityMeasurementFragment fragment = new FormActivityMeasurementFragment();
+            fragmentTransaction.add(R.id.activity_form_container, fragment);
         }
+
+        fragmentTransaction.commit();
 
 //        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }

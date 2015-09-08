@@ -22,13 +22,13 @@ public class MainActivityCaptureFragment extends Fragment {
         return v;
     }
 
-    public void setUpButtons(View v) {
+    public void setUpButtons(View view) {
         final Context context = getActivity().getApplicationContext();
 
-        Button buttonNewEvent = (Button) v.findViewById(R.id.button_event_new);
-        Button buttonNewTask = (Button)  v.findViewById(R.id.button_task_new);
-        Button buttonNewStory = (Button)  v.findViewById(R.id.button_story_new);
-        Button buttonNewMeasurement = (Button) v.findViewById(R.id.button_measurement_new);
+        Button buttonNewEvent = (Button) view.findViewById(R.id.button_event_new);
+        Button buttonNewTask = (Button)  view.findViewById(R.id.button_task_new);
+        Button buttonNewStory = (Button)  view.findViewById(R.id.button_story_new);
+        Button buttonNewMeasurement = (Button) view.findViewById(R.id.button_measurement_new);
 
         buttonNewEvent.setOnClickListener(
                 new View.OnClickListener() {
