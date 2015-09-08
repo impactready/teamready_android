@@ -36,7 +36,7 @@ public class FormActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.activity_form_container, fragment);
 
         } else if (text.equals(MainActivity.MEASUREMENT)) {
-            getSupportActionBar().setTitle("New indicator " + MainActivity.MEASUREMENT);
+            getSupportActionBar().setTitle("New " + MainActivity.MEASUREMENT);
             FormActivityMeasurementFragment fragment = new FormActivityMeasurementFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
         }
