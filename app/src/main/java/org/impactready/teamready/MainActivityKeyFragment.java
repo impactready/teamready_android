@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivityKeyFragment extends Fragment {
@@ -91,7 +94,7 @@ public class MainActivityKeyFragment extends Fragment {
     private static class AccountSetupTask extends AsyncTask<String, Void, Void> {
         private static final String TAG = "Account Setup Task";
 
-        protected String doInBackground(String... params) {
+        protected Void doInBackground(String... params) {
             int groupCount = 0;
             int typeCount = 0;
             InputStream is = null;
@@ -99,10 +102,9 @@ public class MainActivityKeyFragment extends Fragment {
             String url = "http://impactready.herokuapp.com/api/v1/android/setup";
             String userCredentials = "api:" + params;
             String basicAuth = "Basic " + new String(new Base64.encode(userCredentials.getBytes(), Base64.DEFAULT));
-            String contentAsString;
+            String contentAsString = "";
 
             try {
-
                 conn = (HttpURLConnection) new URL(url).openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
@@ -111,18 +113,19 @@ public class MainActivityKeyFragment extends Fragment {
 
                 is = new BufferedInputStream(conn.getInputStream());
 
-                // Convert the InputStream into a string
                 contentAsString = is.toString();
 
-                // Makes sure that the InputStream is closed after the app is
-                // finished using it.
+            } catch (MalformedURLException e) {
+                Log.e(TAG, "MalformedURLException");
+            } catch (IOException exception) {
+                Log.e(TAG, "IOException");
             } finally {
                 if (is != null) {
                     conn.disconnect();
                 }
             }
-
-            return contentAsString;
+            Log.e(TAG, contentAsString);
+//            return contentAsString;
         }
 
 
