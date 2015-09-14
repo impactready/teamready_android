@@ -83,6 +83,7 @@ public class MainActivityKeyFragment extends Fragment {
                                     .setTitle("API Key not set");
 
                             AlertDialog dialog = builder.create();
+                            dialog.show();
                         }
 
                     }
@@ -91,7 +92,7 @@ public class MainActivityKeyFragment extends Fragment {
         );
     }
 
-    private static class AccountSetupTask extends AsyncTask<String, Void, Void> {
+    class AccountSetupTask extends AsyncTask<String, Void, Void> {
         private static final String TAG = "Account Setup Task";
 
         protected Void doInBackground(String... params) {
@@ -101,7 +102,7 @@ public class MainActivityKeyFragment extends Fragment {
             HttpURLConnection conn = null;
             String url = "http://impactready.herokuapp.com/api/v1/android/setup";
             String userCredentials = "api:" + params;
-            String basicAuth = "Basic " + new String(new Base64.encode(userCredentials.getBytes(), Base64.DEFAULT));
+            String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.DEFAULT));
             String contentAsString = "";
 
             try {
@@ -112,7 +113,7 @@ public class MainActivityKeyFragment extends Fragment {
                 conn.setRequestProperty ("Authorization", basicAuth);
 
                 is = new BufferedInputStream(conn.getInputStream());
-
+                
                 contentAsString = is.toString();
 
             } catch (MalformedURLException e) {
@@ -126,6 +127,7 @@ public class MainActivityKeyFragment extends Fragment {
             }
             Log.e(TAG, contentAsString);
 //            return contentAsString;
+            return null;
         }
 
 
@@ -136,6 +138,7 @@ public class MainActivityKeyFragment extends Fragment {
                     .setTitle("Setup complete");
 
             AlertDialog dialog = builder.create();
+            dialog.show();
 
         }
     }
