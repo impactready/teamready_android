@@ -2,14 +2,22 @@ package org.impactready.teamready;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MainActivityKeyFragment extends Fragment {
 
@@ -20,7 +28,6 @@ public class MainActivityKeyFragment extends Fragment {
         View v = inflater.inflate(R.layout.activity_main_fragment_key, container, false);
         setApiKey(v);
         setUpButtons(v);
-
         return v;
     }
 
@@ -35,6 +42,8 @@ public class MainActivityKeyFragment extends Fragment {
         final Context context = getActivity().getApplicationContext();
 
         Button buttonSaveKey = (Button) view.findViewById(R.id.button_key_save);
+        Button buttonSetupKey = (Button) view.findViewById(R.id.button_account_setup);
+
 
         buttonSaveKey.setOnClickListener(
                 new View.OnClickListener() {
@@ -53,6 +62,80 @@ public class MainActivityKeyFragment extends Fragment {
                     }
                 }
         );
+
+        buttonSetupKey.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.PREFS_NAME, 0);
+
+                        String apiKey = settings.getString("apiKey", "");
+
+                        if (apiKey != "") {
+                            new AccountSetupTask().execute("apiKey");
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                            builder.setMessage("You do not have an API key set.")
+                                    .setTitle("API Key not set");
+
+                            AlertDialog dialog = builder.create();
+                        }
+
+                    }
+
+                }
+        );
     }
+
+    private static class AccountSetupTask extends AsyncTask<String, Void, Void> {
+        private static final String TAG = "Account Setup Task";
+
+        protected String doInBackground(String... params) {
+            int groupCount = 0;
+            int typeCount = 0;
+            InputStream is = null;
+            HttpURLConnection conn = null;
+            String url = "http://impactready.herokuapp.com/api/v1/android/setup";
+            String userCredentials = "api:" + params;
+            String basicAuth = "Basic " + new String(new Base64.encode(userCredentials.getBytes(), Base64.DEFAULT));
+            String contentAsString;
+
+            try {
+
+                conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setReadTimeout(10000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty ("Authorization", basicAuth);
+
+                is = new BufferedInputStream(conn.getInputStream());
+
+                // Convert the InputStream into a string
+                contentAsString = is.toString();
+
+                // Makes sure that the InputStream is closed after the app is
+                // finished using it.
+            } finally {
+                if (is != null) {
+                    conn.disconnect();
+                }
+            }
+
+            return contentAsString;
+        }
+
+
+        protected void onPostExecute() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage("Your account setup is complete.")
+                    .setTitle("Setup complete");
+
+            AlertDialog dialog = builder.create();
+
+        }
+    }
+
 
 }

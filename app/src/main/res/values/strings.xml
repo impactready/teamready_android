@@ -10,6 +10,7 @@
     <string name="label_event_description">Description</string>
 
     <string name="button_key_save">Save API key</string>
+    <string name="button_account_setup">Download setup</string>
 
 
 </resources>
