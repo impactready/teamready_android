@@ -21,7 +21,7 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.activity_main_list_fragment_item, parent, false);
+        View rowView = inflater.inflate(R.layout.activity_main_fragment_list_item, parent, false);
         TextView textView1 = (TextView) rowView.findViewById(R.id.item_first_line);
         TextView textView2 = (TextView) rowView.findViewById(R.id.item_second_line);
         //ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);

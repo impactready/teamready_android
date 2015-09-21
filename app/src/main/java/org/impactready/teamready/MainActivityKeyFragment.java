@@ -15,22 +15,35 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivityKeyFragment extends Fragment {
+    private static final String TAG = "Account Setup Task";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final Context context = getActivity().getApplicationContext();
 
         View v = inflater.inflate(R.layout.activity_main_fragment_key, container, false);
         setApiKey(v);
-        setUpButtons(v);
+        setUpButtons(context, v);
+        setupLists(context, v);
         return v;
     }
 
@@ -41,12 +54,11 @@ public class MainActivityKeyFragment extends Fragment {
         apiKey.setText(settings.getString("apiKey", ""));
     }
 
-    public void setUpButtons(View view) {
-        final Context context = getActivity().getApplicationContext();
+    public void setUpButtons(final Context context, View view) {
+
 
         Button buttonSaveKey = (Button) view.findViewById(R.id.button_key_save);
         Button buttonSetupKey = (Button) view.findViewById(R.id.button_account_setup);
-
 
         buttonSaveKey.setOnClickListener(
                 new View.OnClickListener() {
@@ -75,15 +87,20 @@ public class MainActivityKeyFragment extends Fragment {
                         String apiKey = settings.getString("apiKey", "");
 
                         if (apiKey != "") {
-                            new AccountSetupTask().execute("apiKey");
+                            new AccountSetupTask().execute(apiKey);
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                             builder.setMessage("You do not have an API key set.")
                                     .setTitle("API Key not set");
 
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            final AlertDialog dialog = builder.create();
+                            getActivity().runOnUiThread(new java.lang.Runnable() {
+                                public void run() {
+                                    //show AlertDialog
+                                    dialog.show();
+                                }
+                            });
                         }
 
                     }
@@ -92,34 +109,78 @@ public class MainActivityKeyFragment extends Fragment {
         );
     }
 
+    public void setupLists(Context context, View v) {
+        TextView typesList = (TextView) v.findViewById(R.id.types_list);
+        TextView groupsList = (TextView) v.findViewById(R.id.groups_list);
+
+        String typesFilename = context.getString(R.string.types_filename);
+        String groupsFilename = context.getString(R.string.groups_filename);
+
+        try {
+            JSONArray typesJson = new JSONArray(readFile(context,typesFilename));
+            JSONArray groupsJson = new JSONArray(readFile(context,groupsFilename));
+
+            for (int i = 0; i < typesJson.length(); i++) {
+                JSONObject type = typesJson.getJSONObject(i);
+                String details = type.getString("description") + " : " + type.getString("usage") + "\n";
+                typesList.append(details);
+            }
+
+            for (int i = 0; i < groupsJson.length(); i++) {
+                JSONObject group = groupsJson.getJSONObject(i);
+                String details = group.getString("name") + "\n";
+                groupsList.append(details);
+            }
+
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+        }
+
+    }
+
     class AccountSetupTask extends AsyncTask<String, Void, Void> {
-        private static final String TAG = "Account Setup Task";
 
         protected Void doInBackground(String... params) {
             int groupCount = 0;
             int typeCount = 0;
             InputStream is = null;
-            HttpURLConnection conn = null;
-            String url = "http://impactready.herokuapp.com/api/v1/android/setup";
-            String userCredentials = "api:" + params;
-            String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.DEFAULT));
+            HttpsURLConnection conn = null;
+            BufferedReader reader = null;
+            String url = "https://impactready.herokuapp.com/api/v1/android/setup";
+            String userCredentials = "api:" + params[0];
+            String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.NO_WRAP));
             String contentAsString = "";
 
             try {
-                conn = (HttpURLConnection) new URL(url).openConnection();
+                conn = (HttpsURLConnection) new URL(url).openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
                 conn.setRequestMethod("GET");
-                conn.setRequestProperty ("Authorization", basicAuth);
+                conn.setRequestProperty("Authorization", basicAuth);
 
                 is = new BufferedInputStream(conn.getInputStream());
-                
-                contentAsString = is.toString();
+
+                InputStreamReader streamReader = new InputStreamReader(is);
+                reader = new BufferedReader(streamReader);
+                StringBuilder builder = new StringBuilder();
+                String line = reader.readLine();
+                while (line != null) {
+                    builder.append(line);
+                    line = reader.readLine();
+                }
+
+                parseAndSaveJson(builder);
+                setupLists(getActivity().getApplicationContext(), getView());
+
 
             } catch (MalformedURLException e) {
-                Log.e(TAG, "MalformedURLException");
-            } catch (IOException exception) {
-                Log.e(TAG, "IOException");
+                Log.e(TAG, "MalformedURLException", e);
+            } catch (IOException e) {
+                Log.e(TAG, "IOException", e);
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
             } finally {
                 if (is != null) {
                     conn.disconnect();
@@ -137,11 +198,48 @@ public class MainActivityKeyFragment extends Fragment {
             builder.setMessage("Your account setup is complete.")
                     .setTitle("Setup complete");
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            final AlertDialog dialog = builder.create();
+            getActivity().runOnUiThread(new java.lang.Runnable() {
+                public void run() {
+                    //show AlertDialog
+                    dialog.show();
+                }
+            });
 
         }
+
     }
+
+    protected void parseAndSaveJson(StringBuilder jsonString) throws IOException, JSONException {
+        final Context context = getActivity().getApplicationContext();
+
+        JSONObject allSetupData = new JSONObject(jsonString.toString());
+        JSONArray typesJSON = allSetupData.getJSONArray("types");
+        JSONArray groupsJSON = allSetupData.getJSONArray("groups");
+
+        String types_filename = context.getString(R.string.types_filename);
+        String groups_filename = context.getString(R.string.groups_filename);
+
+        writeFile(context, types_filename, typesJSON);
+        writeFile(context, groups_filename, groupsJSON);
+
+    }
+
+    protected void writeFile(Context context, String filename, JSONArray json) throws IOException {
+        FileOutputStream fos1 =  context.openFileOutput(filename, Context.MODE_PRIVATE);
+        fos1.write(json.toString().getBytes());
+        fos1.close();
+    }
+
+    protected String readFile(Context context, String filename) throws IOException {
+        FileInputStream fos1 =  context.openFileInput(filename);
+        byte[] bytesFromFile = new byte[(int) fos1.available()];
+        fos1.read(bytesFromFile);
+        fos1.close();
+
+        return new String(bytesFromFile, "UTF-8");
+    }
+
 
 
 }
