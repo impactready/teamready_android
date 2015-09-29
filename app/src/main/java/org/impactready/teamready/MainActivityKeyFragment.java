@@ -2,16 +2,20 @@ package org.impactready.teamready;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,13 +25,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
@@ -110,8 +112,8 @@ public class MainActivityKeyFragment extends Fragment {
     }
 
     public void setupLists(Context context, View v) {
-        TextView typesList = (TextView) v.findViewById(R.id.types_list);
-        TextView groupsList = (TextView) v.findViewById(R.id.groups_list);
+        LinearLayout typesList = (LinearLayout) v.findViewById(R.id.types_list);
+        LinearLayout groupsList = (LinearLayout) v.findViewById(R.id.groups_list);
 
         String typesFilename = context.getString(R.string.types_filename);
         String groupsFilename = context.getString(R.string.groups_filename);
@@ -122,14 +124,36 @@ public class MainActivityKeyFragment extends Fragment {
 
             for (int i = 0; i < typesJson.length(); i++) {
                 JSONObject type = typesJson.getJSONObject(i);
-                String details = type.getString("description") + " : " + type.getString("usage") + "\n";
-                typesList.append(details);
+                TextView typeItem = new TextView(context);
+                typeItem.setId(i + 200);
+                typeItem.setText(type.getString("description") + "\n" + type.getString("usage"));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(3,5,5,0);
+                typeItem.setLayoutParams(layoutParams);
+                typeItem.setHeight(70);
+                typeItem.setBackgroundColor(Color.DKGRAY);
+                typeItem.setTextColor(Color.WHITE);
+                typeItem.setGravity(Gravity.CENTER);
+                typesList.addView(typeItem);
             }
 
             for (int i = 0; i < groupsJson.length(); i++) {
                 JSONObject group = groupsJson.getJSONObject(i);
-                String details = group.getString("name") + "\n";
-                groupsList.append(details);
+                TextView groupItem = new TextView(context);
+                groupItem.setId(i + 100);
+                groupItem.setText(group.getString("name"));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(3,5,5,0);
+                groupItem.setLayoutParams(layoutParams);
+                groupItem.setHeight(70);
+                groupItem.setBackgroundColor(Color.DKGRAY);
+                groupItem.setTextColor(Color.WHITE);
+                groupItem.setGravity(Gravity.CENTER);
+                groupsList.addView(groupItem);
             }
 
         } catch (IOException e) {
