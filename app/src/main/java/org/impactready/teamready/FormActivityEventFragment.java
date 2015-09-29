@@ -51,7 +51,7 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
     public void setupScrolls (Context context, View v) {
         Spinner typeSpinner = (Spinner) v.findViewById(R.id.input_event_type);
         List<String> typeList = new ArrayList<String>();
-        Spinner groupSpinner = (Spinner) v.findViewById(R.id.input_group);
+        Spinner groupSpinner = (Spinner) v.findViewById(R.id.input_event_group);
         List<String> groupList = new ArrayList<String>();
 
         JSONArray typesJson = FileServices.getSetup(R.string.types_filename, context);

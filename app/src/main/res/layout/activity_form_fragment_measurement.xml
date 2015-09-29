@@ -3,31 +3,31 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="org.impactready.teamready.FormActivityEventFragment">
+    tools:context="org.impactready.teamready.FormActivityMeasurementFragment">
 
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_description"
-        android:id="@+id/label_event_description"
+        android:id="@+id/label_measurement_description"
         android:paddingLeft="2dp"
         android:paddingTop="4dp" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/input_event_description"
+        android:id="@+id/input_measurement_description"
         android:paddingLeft="2dp"
         android:paddingTop="4dp"/>
 
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_event_type"
-        android:id="@+id/label_event_type"
+        android:text="@string/label_measurement_type"
+        android:id="@+id/label_measurement_type"
         android:paddingLeft="2dp"
         android:paddingTop="4dp" />
 
     <Spinner
-        android:id="@+id/input_event_type"
+        android:id="@+id/input_measurement_type"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -42,7 +42,7 @@
         android:paddingTop="4dp" />
 
     <Spinner
-        android:id="@+id/input_event_group"
+        android:id="@+id/input_measurement_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -52,28 +52,28 @@
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_longitude"
-        android:id="@+id/label_event_longitude"
+        android:id="@+id/label_measurement_longitude"
         android:paddingLeft="2dp"
         android:paddingTop="4dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/input_event_longitude"
+        android:id="@+id/input_measurement_longitude"
         android:paddingLeft="2dp"
         android:paddingTop="4dp"/>
 
     <TextView android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_latitude"
-        android:id="@+id/label_event_latitude"
+        android:id="@+id/label_measurement_latitude"
         android:paddingLeft="2dp"
         android:paddingTop="4dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/input_event_latitude"
+        android:id="@+id/input_measurement_latitude"
         android:paddingLeft="2dp"
         android:paddingTop="4dp"/>
 
