@@ -6,10 +6,14 @@
     <string name="button_task_new">New task</string>
     <string name="button_story_new">New story</string>
     <string name="button_measurement_new">New indicator measurement</string>
-    <string name="groups_label">Groups:</string>
-    <string name="types_label">Types:</string>
+    <string name="label_groups">Groups:</string>
+    <string name="label_types">Types:</string>
 
     <string name="label_event_description">Description</string>
+    <string name="label_event_type">Event type</string>
+    <string name="label_group">Event type</string>
+    <string name="label_event_longitude">Longitude</string>
+    <string name="label_event_latitude">Latitude</string>
 
     <string name="button_key_save">Save API key</string>
     <string name="button_account_setup">Download setup</string>
@@ -19,6 +23,5 @@
     <string name="events_filename">impactready_events.txt</string>
     <string name="stories_filename">impactready_stories.txt</string>
     <string name="measurements_filename">impactready_measurements.txt</string>
-
 
 </resources>

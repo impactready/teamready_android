@@ -4,17 +4,16 @@
     android:layout_height="match_parent">
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <EditText
         android:id="@+id/input_key_save"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_marginTop="2dp"
         android:hint="Please enter." />
 
@@ -22,9 +21,6 @@
         android:id="@+id/button_key_save"
         android:layout_width="fill_parent"
         android:layout_height="64dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/input_key_save"
         android:text="@string/button_key_save"
         android:textSize="18sp"/>
 
@@ -32,22 +28,19 @@
         android:id="@+id/button_account_setup"
         android:layout_width="fill_parent"
         android:layout_height="64dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button_key_save"
         android:text="@string/button_account_setup"
         android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/groups_label"
+        android:id="@+id/label_groups"
         android:layout_width="fill_parent"
         android:layout_height="30dp"
-        android:layout_below="@+id/button_account_setup"
         android:layout_marginTop="5dp"
         android:background="#ffcfcdcb"
         android:maxLines="10"
         android:paddingLeft="3dp"
         android:paddingTop="3dp"
-        android:text="@string/groups_label"
+        android:text="@string/label_groups"
         android:textColor="#ff000000"
         android:textSize="15dp"
         android:textStyle="bold"></TextView>
@@ -56,22 +49,20 @@
         android:id="@+id/groups_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/groups_label"
         android:minHeight="70dp"
         android:paddingLeft="3dp"
         android:orientation="vertical"></LinearLayout>
 
     <TextView
-        android:id="@+id/types_label"
+        android:id="@+id/label_types"
         android:layout_width="fill_parent"
         android:layout_height="30dp"
-        android:layout_below="@+id/groups_list"
         android:layout_marginTop="5dp"
         android:background="#ffcfcdcb"
         android:maxLines="10"
         android:paddingLeft="3dp"
         android:paddingTop="3dp"
-        android:text="@string/types_label"
+        android:text="@string/label_types"
         android:textColor="#ff000000"
         android:textSize="15dp"
         android:textStyle="bold"></TextView>
@@ -85,5 +76,5 @@
         android:paddingLeft="3dp"
         android:orientation="vertical"></LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

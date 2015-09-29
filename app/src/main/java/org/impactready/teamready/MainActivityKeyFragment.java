@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -211,7 +210,7 @@ public class MainActivityKeyFragment extends Fragment {
                 }
             }
             Log.e(TAG, contentAsString);
-//            return contentAsString;
+
             return null;
         }
 
@@ -263,7 +262,5 @@ public class MainActivityKeyFragment extends Fragment {
 
         return new String(bytesFromFile, "UTF-8");
     }
-
-
-
+    
 }
