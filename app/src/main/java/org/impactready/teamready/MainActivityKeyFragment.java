@@ -1,12 +1,12 @@
 package org.impactready.teamready;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,11 +35,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivityKeyFragment extends Fragment {
     private static final String TAG = "Account Setup Task";
+    ProgressDialog progress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final Context context = getActivity().getApplicationContext();
+        Context context = getActivity().getApplicationContext();
 
         View v = inflater.inflate(R.layout.activity_main_fragment_key, container, false);
         setApiKey(v);
@@ -88,20 +89,10 @@ public class MainActivityKeyFragment extends Fragment {
                         String apiKey = settings.getString("apiKey", "");
 
                         if (apiKey != "") {
+                            progress = ProgressDialog.show(getActivity(), "Setup", "Downloading setup..", true);
                             new AccountSetupTask().execute(apiKey);
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                            builder.setMessage("You do not have an API key set.")
-                                    .setTitle("API Key not set");
-
-                            final AlertDialog dialog = builder.create();
-                            getActivity().runOnUiThread(new java.lang.Runnable() {
-                                public void run() {
-                                    //show AlertDialog
-                                    dialog.show();
-                                }
-                            });
+                            Toast.makeText(context, "You do not have an API key set", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -113,13 +104,13 @@ public class MainActivityKeyFragment extends Fragment {
     public void setupLists(Context context, View v) {
         LinearLayout typesList = (LinearLayout) v.findViewById(R.id.types_list);
         LinearLayout groupsList = (LinearLayout) v.findViewById(R.id.groups_list);
+        typesList.removeAllViews();
+        groupsList.removeAllViews();
 
-        String typesFilename = context.getString(R.string.types_filename);
-        String groupsFilename = context.getString(R.string.groups_filename);
+        JSONArray typesJson = FileServices.getSetup(R.string.types_filename, context);
+        JSONArray groupsJson = FileServices.getSetup(R.string.groups_filename, context);
 
         try {
-            JSONArray typesJson = new JSONArray(readFile(context,typesFilename));
-            JSONArray groupsJson = new JSONArray(readFile(context,groupsFilename));
 
             for (int i = 0; i < typesJson.length(); i++) {
                 JSONObject type = typesJson.getJSONObject(i);
@@ -155,17 +146,15 @@ public class MainActivityKeyFragment extends Fragment {
                 groupsList.addView(groupItem);
             }
 
-        } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
         }
 
     }
 
-    class AccountSetupTask extends AsyncTask<String, Void, Void> {
+    class AccountSetupTask extends AsyncTask<String, Void, Integer> {
 
-        protected Void doInBackground(String... params) {
+        protected Integer doInBackground(String... params) {
             int groupCount = 0;
             int typeCount = 0;
             InputStream is = null;
@@ -195,7 +184,6 @@ public class MainActivityKeyFragment extends Fragment {
                 }
 
                 parseAndSaveJson(builder);
-                setupLists(getActivity().getApplicationContext(), getView());
 
 
             } catch (MalformedURLException e) {
@@ -211,23 +199,17 @@ public class MainActivityKeyFragment extends Fragment {
             }
             Log.e(TAG, contentAsString);
 
-            return null;
+            return 1;
         }
 
 
-        protected void onPostExecute() {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        protected void onPostExecute(Integer result) {
+            Context context = getActivity().getApplicationContext();
+            Log.d(TAG, "Result is ok: " + result.toString());
 
-            builder.setMessage("Your account setup is complete.")
-                    .setTitle("Setup complete");
-
-            final AlertDialog dialog = builder.create();
-            getActivity().runOnUiThread(new java.lang.Runnable() {
-                public void run() {
-                    //show AlertDialog
-                    dialog.show();
-                }
-            });
+            setupLists(context, getView());
+            progress.dismiss();
+            Toast.makeText(context, "API Key saved", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -240,11 +222,8 @@ public class MainActivityKeyFragment extends Fragment {
         JSONArray typesJSON = allSetupData.getJSONArray("types");
         JSONArray groupsJSON = allSetupData.getJSONArray("groups");
 
-        String types_filename = context.getString(R.string.types_filename);
-        String groups_filename = context.getString(R.string.groups_filename);
-
-        writeFile(context, types_filename, typesJSON);
-        writeFile(context, groups_filename, groupsJSON);
+        FileServices.writeFileJson(context, R.string.types_filename, typesJSON);
+        FileServices.writeFileJson(context, R.string.groups_filename, groupsJSON);
 
     }
 
@@ -262,5 +241,5 @@ public class MainActivityKeyFragment extends Fragment {
 
         return new String(bytesFromFile, "UTF-8");
     }
-    
+
 }

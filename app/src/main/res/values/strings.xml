@@ -11,7 +11,7 @@
 
     <string name="label_event_description">Description</string>
     <string name="label_event_type">Event type</string>
-    <string name="label_group">Event type</string>
+    <string name="label_group">Group</string>
     <string name="label_event_longitude">Longitude</string>
     <string name="label_event_latitude">Latitude</string>
 
