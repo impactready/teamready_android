@@ -13,6 +13,7 @@
     <string name="label_group">Group</string>
     <string name="label_longitude">Longitude</string>
     <string name="label_latitude">Latitude</string>
+    <string name="label_submit">Submit</string>
 
     <string name="label_event_type">Event type</string>
     <string name="label_story_type">Domain of Change</string>

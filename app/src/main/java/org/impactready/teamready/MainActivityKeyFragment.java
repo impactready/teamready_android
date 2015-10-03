@@ -226,20 +226,4 @@ public class MainActivityKeyFragment extends Fragment {
         FileServices.writeFileJson(context, R.string.groups_filename, groupsJSON);
 
     }
-
-    protected void writeFile(Context context, String filename, JSONArray json) throws IOException {
-        FileOutputStream fos1 =  context.openFileOutput(filename, Context.MODE_PRIVATE);
-        fos1.write(json.toString().getBytes());
-        fos1.close();
-    }
-
-    protected String readFile(Context context, String filename) throws IOException {
-        FileInputStream fos1 =  context.openFileInput(filename);
-        byte[] bytesFromFile = new byte[(int) fos1.available()];
-        fos1.read(bytesFromFile);
-        fos1.close();
-
-        return new String(bytesFromFile, "UTF-8");
-    }
-
 }

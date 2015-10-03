@@ -15,10 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FormActivityMeasurementFragment extends Fragment implements LocationListener {
@@ -45,40 +42,20 @@ public class FormActivityMeasurementFragment extends Fragment implements Locatio
 
     public void setupScrolls (Context context, View v) {
         Spinner typeSpinner = (Spinner) v.findViewById(R.id.input_measurement_type);
-        List<String> typeList = new ArrayList<String>();
         Spinner groupSpinner = (Spinner) v.findViewById(R.id.input_measurement_group);
-        List<String> groupList = new ArrayList<String>();
 
         JSONArray typesJson = FileServices.getSetup(R.string.types_filename, context);
         JSONArray groupsJson = FileServices.getSetup(R.string.groups_filename, context);
 
-        try {
+        List<SpinnerElement> typeList = FormComponents.loadTypeDropdown("Indicator", typesJson);
+        List<SpinnerElement> groupList = FormComponents.loadGroupDropdown(groupsJson);
 
-            for (int i = 0; i < typesJson.length(); i++) {
-                JSONObject type = typesJson.getJSONObject(i);
-                String test = type.getString("usage");
-                String test2 = type.getString("description");
-                if (type.getString("usage").equals("Indicator")) {
-                    typeList.add(type.getString("description"));
-                }
-
-            }
-
-            for (int i = 0; i < groupsJson.length(); i++) {
-                JSONObject group = groupsJson.getJSONObject(i);
-                groupList.add(group.getString("name"));
-            }
-
-        } catch (JSONException e) {
-            Log.e(TAG, "JSONException", e);
-        }
-
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this.getActivity(),
+        ArrayAdapter<SpinnerElement> typeAdapter = new ArrayAdapter<SpinnerElement>(this.getActivity(),
                 android.R.layout.simple_spinner_item, typeList);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(typeAdapter);
 
-        ArrayAdapter<String> groupAdapter = new ArrayAdapter<String>(this.getActivity(),
+        ArrayAdapter<SpinnerElement> groupAdapter = new ArrayAdapter<SpinnerElement>(this.getActivity(),
                 android.R.layout.simple_spinner_item, groupList);
         groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupSpinner.setAdapter(groupAdapter);
@@ -89,22 +66,7 @@ public class FormActivityMeasurementFragment extends Fragment implements Locatio
         if (null == (locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)))
             getActivity().finish();
 
-        Location finalLocation = null;
-        float bestAccuracy = Float.MAX_VALUE;
-        List<String> matchingProviders = locationManager.getAllProviders();
-
-        for (String provider : matchingProviders) {
-
-            Location location = locationManager.getLastKnownLocation(provider);
-            if (location != null) {
-                float accuracy = location.getAccuracy();
-                if (accuracy < bestAccuracy) {
-                    finalLocation = location;
-                    bestAccuracy = accuracy;
-
-                }
-            }
-        }
+        Location finalLocation = FormComponents.getLocation(locationManager);
 
         if (finalLocation != null) updateFieldsWithLocation(finalLocation, v);
     }
