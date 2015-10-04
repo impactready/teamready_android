@@ -2,6 +2,10 @@
     <string name="app_name">TeamReady</string>
     <string name="main_title">TeamReady</string>
 
+    <string name="event_main_name">event</string>
+    <string name="story_main_name">story</string>
+    <string name="measurement_main_name">measurement</string>
+
     <string name="button_event_new">New event</string>
     <string name="button_task_new">New task</string>
     <string name="button_story_new">New story</string>

@@ -25,18 +25,18 @@ public class FormActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (text.equals(MainActivity.EVENT)) {
-            getSupportActionBar().setTitle("New " + MainActivity.EVENT);
+        if (text.equals(getString(R.string.event_main_name))) {
+            getSupportActionBar().setTitle("New " + R.string.event_main_name);
             FormActivityEventFragment fragment = new FormActivityEventFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
 
-        } else if (text.equals(MainActivity.STORY)) {
-            getSupportActionBar().setTitle("New " + MainActivity.STORY);
+        } else if (text.equals(getString(R.string.story_main_name))) {
+            getSupportActionBar().setTitle("New " + R.string.story_main_name);
             FormActivityStoryFragment fragment = new FormActivityStoryFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
 
-        } else if (text.equals(MainActivity.MEASUREMENT)) {
-            getSupportActionBar().setTitle("New " + MainActivity.MEASUREMENT);
+        } else if (text.equals(getString(R.string.measurement_main_name))) {
+            getSupportActionBar().setTitle("New " + R.string.measurement_main_name);
             FormActivityMeasurementFragment fragment = new FormActivityMeasurementFragment();
             fragmentTransaction.add(R.id.activity_form_container, fragment);
         }

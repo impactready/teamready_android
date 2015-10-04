@@ -1,10 +1,13 @@
 package org.impactready.teamready;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,16 +16,46 @@ import java.io.IOException;
 public class FileServices {
     private static final String TAG = "File Services";
 
-    public static JSONArray getSetup(Integer fileId, Context context) {
-        String typesFilename = context.getString(fileId);
+    public static JSONArray getSetup(Context context, Integer fileId) {
         try {
-            return new JSONArray(readFileJson(context, typesFilename));
+
+            return new JSONArray(readFileJson(context, fileId));
+
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
         }
         return null;
+    }
+
+    public static void saveObjectToFile(Context context, JSONObject objectJson, Integer objectType) {
+        JSONArray objectArray;
+
+        try {
+            switch (objectType) {
+                case R.string.event_main_name:
+                    objectArray = new JSONArray(readFileJson(context, R.string.events_filename));
+                    objectArray.put(objectJson);
+                    writeFileJson(context, R.string.events_filename, objectArray);
+
+                case R.string.story_main_name:
+                    objectArray = new JSONArray(readFileJson(context, R.string.stories_filename));
+                    objectArray.put(objectJson);
+                    writeFileJson(context, R.string.stories_filename, objectArray);
+
+                case R.string.measurement_main_name:
+                    objectArray = new JSONArray(readFileJson(context, R.string.measurements_filename));
+                    objectArray.put(objectJson);
+                    writeFileJson(context, R.string.measurements_filename, objectArray);
+            }
+
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+        }
+
     }
 
     protected static void writeFileJson(Context context, Integer fileId, JSONArray json) throws IOException {
@@ -33,7 +66,9 @@ public class FileServices {
         fos1.close();
     }
 
-    protected static String readFileJson(Context context, String filename) throws IOException {
+    protected static String readFileJson(Context context, Integer fileId) throws IOException {
+        String filename = context.getString(fileId);
+
         FileInputStream fos1 =  context.openFileInput(filename);
         byte[] bytesFromFile = new byte[(int) fos1.available()];
         fos1.read(bytesFromFile);

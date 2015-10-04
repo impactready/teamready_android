@@ -34,7 +34,7 @@ public class MainActivityCaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra("type", "event");
+                        intent.putExtra("type", getString(R.string.event_main_name));
                         startActivity(intent);
                     }
                 }
@@ -45,7 +45,7 @@ public class MainActivityCaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra("type", "story");
+                        intent.putExtra("type", getString(R.string.story_main_name));
                         startActivity(intent);
                     }
                 }
@@ -56,7 +56,7 @@ public class MainActivityCaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra("type", "measurement");
+                        intent.putExtra("type", getString(R.string.measurement_main_name));
                         startActivity(intent);
                     }
                 }

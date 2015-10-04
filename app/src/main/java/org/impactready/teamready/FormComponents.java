@@ -3,6 +3,9 @@ package org.impactready.teamready;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +16,7 @@ import java.util.List;
 
 public class FormComponents {
     private static final String TAG = "Form Components";
+
     public static ArrayList<SpinnerElement> loadTypeDropdown(String typeDescription, JSONArray typesJson) {
         ArrayList<SpinnerElement> typeList = new ArrayList<SpinnerElement>();
         try {
@@ -64,5 +68,21 @@ public class FormComponents {
             }
         }
         return finalLocation;
+    }
+
+    public static JSONObject getAllFormData(View v) {
+        JSONObject eventJson = new JSONObject();
+        try {
+
+            eventJson.put("description", ((EditText) v.findViewById(R.id.input_event_description)).getText());
+            eventJson.put("type", ((Spinner) v.findViewById(R.id.input_event_type)).getSelectedItem());
+            eventJson.put("group", ((Spinner) v.findViewById(R.id.input_event_group)).getSelectedItem());
+            eventJson.put("longitude", ((EditText) v.findViewById(R.id.input_event_longitude)).getText());
+            eventJson.put("latitude", ((EditText) v.findViewById(R.id.input_event_latitude)).getText());
+
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+        }
+        return eventJson;
     }
 }

@@ -107,8 +107,8 @@ public class MainActivityKeyFragment extends Fragment {
         typesList.removeAllViews();
         groupsList.removeAllViews();
 
-        JSONArray typesJson = FileServices.getSetup(R.string.types_filename, context);
-        JSONArray groupsJson = FileServices.getSetup(R.string.groups_filename, context);
+        JSONArray typesJson = FileServices.getSetup(context, R.string.types_filename);
+        JSONArray groupsJson = FileServices.getSetup(context, R.string.groups_filename);
 
         try {
 

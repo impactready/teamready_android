@@ -1,6 +1,7 @@
 package org.impactready.teamready;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,7 +34,7 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
         View v =  inflater.inflate(R.layout.activity_form_fragment_event, container, false);
         setupScrolls(context, v);
         findLocation(v);
-        setOnClickListenerSave(v);
+        setOnClickListenerSave(context, v);
         return v;
     }
 
@@ -46,8 +48,8 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
         Spinner typeSpinner = (Spinner) v.findViewById(R.id.input_event_type);
         Spinner groupSpinner = (Spinner) v.findViewById(R.id.input_event_group);
 
-        JSONArray typesJson = FileServices.getSetup(R.string.types_filename, context);
-        JSONArray groupsJson = FileServices.getSetup(R.string.groups_filename, context);
+        JSONArray typesJson = FileServices.getSetup(context, R.string.types_filename);
+        JSONArray groupsJson = FileServices.getSetup(context, R.string.groups_filename);
 
         List<SpinnerElement> typeList = FormComponents.loadTypeDropdown("Event type", typesJson);
         List<SpinnerElement> groupList = FormComponents.loadGroupDropdown(groupsJson);
@@ -81,18 +83,18 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
         latitude.setText(String.valueOf(location.getLatitude()));
     }
 
-    public void setOnClickListenerSave(View v) {
+    public void setOnClickListenerSave(final Context context, View v) {
         Button submitButton = (Button) v.findViewById(R.id.input_submit);
         submitButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        JSONObject eventJson = new JSONObject();
-//                        eventJson.put("description", ((EditText) v.findViewById(R.id.input_event_description)).getText());
-//                        eventJson.put("type", ((Spinner) v.findViewById(R.id.input_event_type)).getSelectedItem());
-//                        eventJson.put("group", ((Spinner) v.findViewById(R.id.input_event_group)).getSelectedItem());
-//                        eventJson.put("longitude", ((EditText) v.findViewById(R.id.input_event_longitude)).getText());
-//                        eventJson.put("latitude", ((EditText) v.findViewById(R.id.input_event_latitude)).getText());
+                        JSONObject eventJson = FormComponents.getAllFormData(v);
+                        FileServices.saveObjectToFile(context, eventJson, R.string.event_main_name);
+
+                        Toast.makeText(context, "Event saved.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
 
                     }
                 }
