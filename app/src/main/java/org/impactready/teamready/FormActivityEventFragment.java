@@ -83,12 +83,12 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
         latitude.setText(String.valueOf(location.getLatitude()));
     }
 
-    public void setOnClickListenerSave(final Context context, View v) {
+    public void setOnClickListenerSave(final Context context, final View v) {
         Button submitButton = (Button) v.findViewById(R.id.input_submit);
         submitButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View b) {
                         JSONObject eventJson = FormComponents.getAllFormData(v);
                         FileServices.saveObjectToFile(context, eventJson, R.string.event_main_name);
 

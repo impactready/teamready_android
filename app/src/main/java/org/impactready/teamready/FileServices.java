@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -68,6 +69,11 @@ public class FileServices {
 
     protected static String readFileJson(Context context, Integer fileId) throws IOException {
         String filename = context.getString(fileId);
+
+        File file = new File(filename);
+        if(!file.exists()) {
+            file.createNewFile();
+        }
 
         FileInputStream fos1 =  context.openFileInput(filename);
         byte[] bytesFromFile = new byte[(int) fos1.available()];

@@ -73,7 +73,7 @@ public class FormComponents {
     public static JSONObject getAllFormData(View v) {
         JSONObject eventJson = new JSONObject();
         try {
-
+            EditText text = (EditText) v.findViewById(R.id.input_event_description);
             eventJson.put("description", ((EditText) v.findViewById(R.id.input_event_description)).getText());
             eventJson.put("type", ((Spinner) v.findViewById(R.id.input_event_type)).getSelectedItem());
             eventJson.put("group", ((Spinner) v.findViewById(R.id.input_event_group)).getSelectedItem());
