@@ -72,7 +72,9 @@ public class FileServices {
 
         File file = new File(filename);
         if(!file.exists()) {
-            file.createNewFile();
+            FileOutputStream fosIn =  context.openFileOutput(filename, Context.MODE_PRIVATE);
+            fosIn.write("[]".getBytes());
+            fosIn.close();
         }
 
         FileInputStream fos1 =  context.openFileInput(filename);
