@@ -121,8 +121,9 @@ public class MainActivityKeyFragment extends Fragment {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(3,5,5,0);
+                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.setup_item_height);
                 typeItem.setLayoutParams(layoutParams);
-                typeItem.setHeight(70);
+//                typeItem.setHeight(70);
                 typeItem.setBackgroundColor(Color.DKGRAY);
                 typeItem.setTextColor(Color.WHITE);
                 typeItem.setGravity(Gravity.CENTER);
@@ -138,6 +139,7 @@ public class MainActivityKeyFragment extends Fragment {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(3,5,5,0);
+                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.setup_item_height);
                 groupItem.setLayoutParams(layoutParams);
                 groupItem.setHeight(70);
                 groupItem.setBackgroundColor(Color.DKGRAY);
@@ -209,7 +211,7 @@ public class MainActivityKeyFragment extends Fragment {
 
             setupLists(context, getView());
             progress.dismiss();
-            Toast.makeText(context, "API Key saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Setup downloaded", Toast.LENGTH_SHORT).show();
 
         }
 

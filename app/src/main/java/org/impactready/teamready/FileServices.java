@@ -70,7 +70,7 @@ public class FileServices {
     protected static String readFileJson(Context context, Integer fileId) throws IOException {
         String filename = context.getString(fileId);
 
-        File file = new File(filename);
+        File file = new File(context.getFilesDir() + "/" + filename);
         if(!file.exists()) {
             FileOutputStream fosIn =  context.openFileOutput(filename, Context.MODE_PRIVATE);
             fosIn.write("[]".getBytes());
@@ -78,7 +78,7 @@ public class FileServices {
         }
 
         FileInputStream fos1 =  context.openFileInput(filename);
-        byte[] bytesFromFile = new byte[(int) fos1.available()];
+        byte[] bytesFromFile = new byte[fos1.available()];
         fos1.read(bytesFromFile);
         fos1.close();
 
