@@ -2,6 +2,7 @@ package org.impactready.teamready;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,6 +25,7 @@ import java.util.List;
 public class FormActivityEventFragment extends Fragment implements LocationListener {
     private static final String TAG = "Event creation";
     private LocationManager locationManager;
+    private String provider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +37,12 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
         findLocation(v);
         setOnClickListenerSave(context, v);
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
     }
 
     @Override
@@ -69,7 +77,9 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
         if (null == (locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)))
             getActivity().finish();
 
-        Location finalLocation = FormComponents.getLocation(locationManager);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location finalLocation = FormComponents.getLocation(locationManager, provider);
 
         if (finalLocation != null) updateFieldsWithLocation(finalLocation, v);
     }

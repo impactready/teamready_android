@@ -3,6 +3,7 @@ package org.impactready.teamready;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +26,7 @@ public class FormActivityMeasurementFragment extends Fragment implements Locatio
 
     private static final String TAG = "Measurement creation";
     private LocationManager locationManager;
+    private String provider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,8 +36,15 @@ public class FormActivityMeasurementFragment extends Fragment implements Locatio
         View v =  inflater.inflate(R.layout.activity_form_fragment_measurement, container, false);
         setupScrolls(context, v);
         findLocation(v);
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
         setOnClickListenerSave(context, v);
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
     }
 
     @Override
@@ -70,7 +79,9 @@ public class FormActivityMeasurementFragment extends Fragment implements Locatio
         if (null == (locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)))
             getActivity().finish();
 
-        Location finalLocation = FormComponents.getLocation(locationManager);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location finalLocation = FormComponents.getLocation(locationManager, provider);
 
         if (finalLocation != null) updateFieldsWithLocation(finalLocation, v);
     }

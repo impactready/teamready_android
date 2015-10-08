@@ -50,23 +50,21 @@ public class FormComponents {
         return groupList;
     }
 
-    public static Location getLocation(LocationManager locationManager) {
+    public static Location getLocation(LocationManager locationManager, String provider) {
         Location finalLocation = null;
         float bestAccuracy = Float.MAX_VALUE;
-        List<String> matchingProviders = locationManager.getAllProviders();
 
-        for (String provider : matchingProviders) {
+        Location location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            float accuracy = location.getAccuracy();
+            if (accuracy < bestAccuracy) {
+                finalLocation = location;
+                bestAccuracy = accuracy;
 
-            Location location = locationManager.getLastKnownLocation(provider);
-            if (location != null) {
-                float accuracy = location.getAccuracy();
-                if (accuracy < bestAccuracy) {
-                    finalLocation = location;
-                    bestAccuracy = accuracy;
-
-                }
             }
         }
+
+
         return finalLocation;
     }
 
