@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class FormActivityEventFragment extends Fragment implements LocationListener {
+public class FormActivityFragment extends Fragment implements LocationListener {
     private static final String TAG = "Event creation";
     private LocationManager locationManager;
     private String provider;
@@ -31,8 +31,19 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Context context = getActivity().getApplicationContext();
+        String type = this.getArguments().getString("type");
+        View v = null;
 
-        View v =  inflater.inflate(R.layout.activity_form_fragment_event, container, false);
+        if (type.equals(getString(R.string.event_main_name))) {
+            v =  inflater.inflate(R.layout.activity_form_fragment_event, container, false);
+
+        } else if (type.equals(getString(R.string.story_main_name))) {
+            v =  inflater.inflate(R.layout.activity_form_fragment_story, container, false);
+
+        } else if (type.equals(getString(R.string.measurement_main_name))) {
+            v =  inflater.inflate(R.layout.activity_form_fragment_story, container, false);
+        }
+
         setupScrolls(context, v);
         findLocation(v);
         setOnClickListenerSave(context, v);

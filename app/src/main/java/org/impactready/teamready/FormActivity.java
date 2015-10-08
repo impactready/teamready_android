@@ -25,10 +25,11 @@ public class FormActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        Bundle bundle = new Bundle();
+        bundle.putString("type", text );
+
         if (text.equals(getString(R.string.event_main_name))) {
             getSupportActionBar().setTitle("New " + getString(R.string.event_main_name));
-            FormActivityEventFragment fragment = new FormActivityEventFragment();
-            fragmentTransaction.add(R.id.activity_form_container, fragment);
 
         } else if (text.equals(getString(R.string.story_main_name))) {
             getSupportActionBar().setTitle("New " + getString(R.string.story_main_name));
@@ -41,9 +42,11 @@ public class FormActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.activity_form_container, fragment);
         }
 
+        FormActivityFragment fragment = new FormActivityFragment();
+        fragment.setArguments(bundle);
+        fragmentTransaction.add(R.id.activity_form_container, fragment);
         fragmentTransaction.commit();
 
-//        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
