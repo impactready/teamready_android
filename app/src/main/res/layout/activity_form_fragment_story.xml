@@ -80,7 +80,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/input_submit"
+        android:id="@+id/input_story_submit"
         android:text="@string/label_submit" />
 
 </LinearLayout>

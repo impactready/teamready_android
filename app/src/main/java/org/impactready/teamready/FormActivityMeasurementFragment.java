@@ -7,7 +7,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +48,8 @@ public class FormActivityMeasurementFragment extends Fragment implements Locatio
         Spinner typeSpinner = (Spinner) v.findViewById(R.id.input_measurement_type);
         Spinner groupSpinner = (Spinner) v.findViewById(R.id.input_measurement_group);
 
-        JSONArray typesJson = FileServices.getSetup(context, R.string.types_filename);
-        JSONArray groupsJson = FileServices.getSetup(context, R.string.groups_filename);
+        JSONArray typesJson = FileServices.getFileJSON(context, R.string.types_filename);
+        JSONArray groupsJson = FileServices.getFileJSON(context, R.string.groups_filename);
 
         List<SpinnerElement> typeList = FormComponents.loadTypeDropdown("Indicator", typesJson);
         List<SpinnerElement> groupList = FormComponents.loadGroupDropdown(groupsJson);
@@ -85,13 +84,13 @@ public class FormActivityMeasurementFragment extends Fragment implements Locatio
     }
 
     public void setOnClickListenerSave(final Context context, final View v) {
-        Button submitButton = (Button) v.findViewById(R.id.input_submit);
+        Button submitButton = (Button) v.findViewById(R.id.input_measurement_submit);
         submitButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View b) {
                         JSONObject eventJson = FormComponents.getAllFormData(v);
-                        FileServices.saveObjectToFile(context, eventJson, R.string.event_main_name);
+                        FileServices.saveObjectToFile(context, eventJson, R.string.measurement_main_name);
 
                         Toast.makeText(context, "Measurement saved.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), MainActivity.class);

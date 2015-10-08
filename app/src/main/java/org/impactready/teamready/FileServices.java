@@ -17,7 +17,7 @@ import java.io.IOException;
 public class FileServices {
     private static final String TAG = "File Services";
 
-    public static JSONArray getSetup(Context context, Integer fileId) {
+    public static JSONArray getFileJSON(Context context, Integer fileId) {
         try {
 
             return new JSONArray(readFileJson(context, fileId));
@@ -39,16 +39,19 @@ public class FileServices {
                     objectArray = new JSONArray(readFileJson(context, R.string.events_filename));
                     objectArray.put(objectJson);
                     writeFileJson(context, R.string.events_filename, objectArray);
+                    break;
 
                 case R.string.story_main_name:
                     objectArray = new JSONArray(readFileJson(context, R.string.stories_filename));
                     objectArray.put(objectJson);
                     writeFileJson(context, R.string.stories_filename, objectArray);
+                    break;
 
                 case R.string.measurement_main_name:
                     objectArray = new JSONArray(readFileJson(context, R.string.measurements_filename));
                     objectArray.put(objectJson);
                     writeFileJson(context, R.string.measurements_filename, objectArray);
+                    break;
             }
 
         } catch (IOException e) {

@@ -7,7 +7,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +47,8 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
         Spinner typeSpinner = (Spinner) v.findViewById(R.id.input_event_type);
         Spinner groupSpinner = (Spinner) v.findViewById(R.id.input_event_group);
 
-        JSONArray typesJson = FileServices.getSetup(context, R.string.types_filename);
-        JSONArray groupsJson = FileServices.getSetup(context, R.string.groups_filename);
+        JSONArray typesJson = FileServices.getFileJSON(context, R.string.types_filename);
+        JSONArray groupsJson = FileServices.getFileJSON(context, R.string.groups_filename);
 
         List<SpinnerElement> typeList = FormComponents.loadTypeDropdown("Event type", typesJson);
         List<SpinnerElement> groupList = FormComponents.loadGroupDropdown(groupsJson);
@@ -84,7 +83,7 @@ public class FormActivityEventFragment extends Fragment implements LocationListe
     }
 
     public void setOnClickListenerSave(final Context context, final View v) {
-        Button submitButton = (Button) v.findViewById(R.id.input_submit);
+        Button submitButton = (Button) v.findViewById(R.id.input_event_submit);
         submitButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

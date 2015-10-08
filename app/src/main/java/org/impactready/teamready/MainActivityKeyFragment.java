@@ -24,8 +24,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -107,8 +105,8 @@ public class MainActivityKeyFragment extends Fragment {
         typesList.removeAllViews();
         groupsList.removeAllViews();
 
-        JSONArray typesJson = FileServices.getSetup(context, R.string.types_filename);
-        JSONArray groupsJson = FileServices.getSetup(context, R.string.groups_filename);
+        JSONArray typesJson = FileServices.getFileJSON(context, R.string.types_filename);
+        JSONArray groupsJson = FileServices.getFileJSON(context, R.string.groups_filename);
 
         try {
 
