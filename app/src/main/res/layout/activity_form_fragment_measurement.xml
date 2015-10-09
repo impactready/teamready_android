@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="org.impactready.teamready.FormActivityMeasurementFragment">
+    tools:context="org.impactready.teamready.FormActivityFragment">
 
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"

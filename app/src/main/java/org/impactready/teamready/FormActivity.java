@@ -33,13 +33,9 @@ public class FormActivity extends AppCompatActivity {
 
         } else if (text.equals(getString(R.string.story_main_name))) {
             getSupportActionBar().setTitle("New " + getString(R.string.story_main_name));
-            FormActivityStoryFragment fragment = new FormActivityStoryFragment();
-            fragmentTransaction.add(R.id.activity_form_container, fragment);
 
         } else if (text.equals(getString(R.string.measurement_main_name))) {
             getSupportActionBar().setTitle("New " + getString(R.string.measurement_main_name));
-            FormActivityMeasurementFragment fragment = new FormActivityMeasurementFragment();
-            fragmentTransaction.add(R.id.activity_form_container, fragment);
         }
 
         FormActivityFragment fragment = new FormActivityFragment();
