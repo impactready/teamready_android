@@ -2,6 +2,7 @@ package org.impactready.teamready;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,11 +30,11 @@ import java.util.List;
 public class FormActivityFragment extends Fragment implements LocationListener {
     private static final String TAG = "Event creation";
     public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int IMAGE_REQUEST_CODE = 1;
+    public static final int IMAGE_REQUEST_CODE = 100;
     private LocationManager locationManager;
     private String provider;
     private String fragmentType;
-    private URI imageLocation;
+    private Uri imageLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -202,8 +204,8 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                     public void onClick(View b) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                        Uri fileUri = FileServices.getOutputMediaFile();
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                        imageLocation = FileServices.getOutputMediaFile();
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageLocation);
 
                         startActivityForResult(intent, IMAGE_REQUEST_CODE);
                     }
@@ -231,15 +233,32 @@ public class FormActivityFragment extends Fragment implements LocationListener {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ImageView imageView = null;
+        Context context = getActivity().getApplicationContext();
+
         if (requestCode == IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
-                // Image captured and saved to fileUri specified in the Intent
-                Toast.makeText(getActivity(), "Image saved", Toast.LENGTH_SHORT).show();
+
+                if (fragmentType.equals(getString(R.string.event_main_name))) {
+                    imageView = (ImageView) getView().findViewById(R.id.image_event);
+
+                } else if (fragmentType.equals(getString(R.string.story_main_name))) {
+                    imageView = (ImageView) getView().findViewById(R.id.image_event);
+
+                } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
+                    imageView = (ImageView) getView().findViewById(R.id.image_event);
+
+                }
+
+                Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation);
+                imageView.setImageBitmap(imageBitmap);
+
+                Toast.makeText(getActivity(), "Image saved.", Toast.LENGTH_SHORT).show();
 
             } else if (resultCode == getActivity().RESULT_CANCELED) {
-                Toast.makeText(getActivity(), "Image cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Image cancelled.", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getActivity(), "Image capture failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Image capture failed.", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -1,4 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -86,9 +90,18 @@
         android:paddingTop="4dp" />
 
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:id="@+id/input_event_submit"
+        android:layout_height="64dp"
+        android:textSize="18sp"
         android:text="@string/label_submit" />
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/image_event"
+        android:scaleType="centerCrop"
+        android:contentDescription="Event image"/>
+
+    </LinearLayout>
+</ScrollView>
