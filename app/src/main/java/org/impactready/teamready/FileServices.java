@@ -2,6 +2,8 @@ package org.impactready.teamready;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,9 +15,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FileServices {
     private static final String TAG = "File Services";
+    public static final int MEDIA_TYPE_IMAGE = 1;
 
     public static JSONArray getFileJSON(Context context, Integer fileId) {
         try {
@@ -86,5 +92,24 @@ public class FileServices {
         fos1.close();
 
         return new String(bytesFromFile, "UTF-8");
+    }
+
+
+    public static Uri getOutputMediaFile() {
+        File mediaFile = null;
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "teamReady");
+
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
+
+        return Uri.fromFile(mediaFile);
+
     }
 }

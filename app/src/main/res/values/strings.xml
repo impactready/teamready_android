@@ -10,9 +10,10 @@
     <string name="button_task_new">New task</string>
     <string name="button_story_new">New story</string>
     <string name="button_measurement_new">New indicator measurement</string>
+
+    <string name="button_image_capture">Capture image</string>
     <string name="label_groups">Groups:</string>
     <string name="label_types">Types:</string>
-
     <string name="label_description">Description</string>
     <string name="label_group">Group</string>
     <string name="label_longitude">Longitude</string>

@@ -6,8 +6,10 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +22,17 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URI;
 import java.util.List;
 
 public class FormActivityFragment extends Fragment implements LocationListener {
     private static final String TAG = "Event creation";
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int IMAGE_REQUEST_CODE = 1;
     private LocationManager locationManager;
     private String provider;
     private String fragmentType;
+    private URI imageLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +57,7 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         setupScrolls(context, v);
         findLocation(v);
         locationManager.requestLocationUpdates(provider, 400, 1, this);
-        setOnClickListenerSave(context, v);
+        setOnClickListeners(context, v);
         return v;
     }
 
@@ -75,7 +81,7 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         JSONArray typesJson = FileServices.getFileJSON(context, R.string.types_filename);
         JSONArray groupsJson = FileServices.getFileJSON(context, R.string.groups_filename);
 
-        if (fragmentType.equals(getString(R.string.event_main_name))) {
+        if (fragmentType.equals("event")) {
 
             typeSpinner = (Spinner) v.findViewById(R.id.input_event_type);
             groupSpinner = (Spinner) v.findViewById(R.id.input_event_group);
@@ -140,20 +146,22 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         latitude.setText(String.valueOf(location.getLatitude()));
     }
 
-    public void setOnClickListenerSave(final Context context, final View v) {
-        Button submitButton = (Button) v.findViewById(R.id.input_event_submit);
-        String toaster = null;
-        Integer rObjectFile = null;
+    public void setOnClickListeners(final Context context, final View v) {
+        Button submitButton = null;
+        Button imageButton = null;
+
 
         if (fragmentType.equals(getString(R.string.event_main_name))) {
             submitButton = (Button) v.findViewById(R.id.input_event_submit);
+            imageButton = (Button) v.findViewById(R.id.button_event_image);
 
         } else if (fragmentType.equals(getString(R.string.story_main_name))) {
             submitButton = (Button) v.findViewById(R.id.input_story_submit);
+            imageButton = (Button) v.findViewById(R.id.button_story_image);
 
         } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
             submitButton = (Button) v.findViewById(R.id.input_measurement_submit);
-
+            imageButton = (Button) v.findViewById(R.id.button_measurement_image);
         }
 
         submitButton.setOnClickListener(
@@ -187,6 +195,20 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                     }
                 }
         );
+
+        imageButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View b) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                        Uri fileUri = FileServices.getOutputMediaFile();
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+                        startActivityForResult(intent, IMAGE_REQUEST_CODE);
+                    }
+                }
+        );
     }
 
     @Override
@@ -206,5 +228,19 @@ public class FormActivityFragment extends Fragment implements LocationListener {
 
     public void onProviderDisabled(String provider) {
         // NA
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == IMAGE_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                // Image captured and saved to fileUri specified in the Intent
+                Toast.makeText(getActivity(), "Image saved", Toast.LENGTH_SHORT).show();
+
+            } else if (resultCode == getActivity().RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "Image cancelled", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Image capture failed", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
