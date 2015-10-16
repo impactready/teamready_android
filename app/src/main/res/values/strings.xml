@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">TeamReady</string>
-    <string name="main_title">TeamReady</string>
+    <string name="app_name">protea.io</string>
+    <string name="main_title">protea.io</string>
 
     <string name="event_main_name">event</string>
     <string name="story_main_name">story</string>
@@ -27,10 +27,10 @@
     <string name="button_key_save">Save API key</string>
     <string name="button_account_setup">Download setup</string>
 
-    <string name="types_filename">impactready_types.txt</string>
-    <string name="groups_filename">impactready_groups.txt</string>
-    <string name="events_filename">impactready_events.txt</string>
-    <string name="stories_filename">impactready_stories.txt</string>
-    <string name="measurements_filename">impactready_measurements.txt</string>
+    <string name="types_filename">protea_types.txt</string>
+    <string name="groups_filename">protea_groups.txt</string>
+    <string name="events_filename">protea_events.txt</string>
+    <string name="stories_filename">protea_stories.txt</string>
+    <string name="measurements_filename">protea_measurements.txt</string>
 
 </resources>

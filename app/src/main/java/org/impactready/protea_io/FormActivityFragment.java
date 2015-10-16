@@ -1,4 +1,4 @@
-package org.impactready.teamready;
+package org.impactready.protea_io;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +24,6 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URI;
 import java.util.List;
 
 public class FormActivityFragment extends Fragment implements LocationListener {
@@ -234,6 +233,7 @@ public class FormActivityFragment extends Fragment implements LocationListener {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ImageView imageView = null;
+        EditText imageText= null;
         Context context = getActivity().getApplicationContext();
 
         if (requestCode == IMAGE_REQUEST_CODE) {
@@ -241,17 +241,24 @@ public class FormActivityFragment extends Fragment implements LocationListener {
 
                 if (fragmentType.equals(getString(R.string.event_main_name))) {
                     imageView = (ImageView) getView().findViewById(R.id.image_event);
+                    imageText = (EditText) getView().findViewById(R.id.input_event_image_location);
 
                 } else if (fragmentType.equals(getString(R.string.story_main_name))) {
-                    imageView = (ImageView) getView().findViewById(R.id.image_event);
+                    imageView = (ImageView) getView().findViewById(R.id.image_story);
+                    imageText = (EditText) getView().findViewById(R.id.input_story_image_location);
 
                 } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
-                    imageView = (ImageView) getView().findViewById(R.id.image_event);
-
+                    imageView = (ImageView) getView().findViewById(R.id.image_measurement);
+                    imageText = (EditText) getView().findViewById(R.id.input_measurement_image_location);
                 }
 
                 Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation);
                 imageView.setImageBitmap(imageBitmap);
+                ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                params.height = getResources().getDimensionPixelSize(R.dimen.image_view_height);
+                imageView.setLayoutParams(params);
+
+                imageText.setText(imageLocation.toString());
 
                 Toast.makeText(getActivity(), "Image saved.", Toast.LENGTH_SHORT).show();
 

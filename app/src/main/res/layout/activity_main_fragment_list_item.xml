@@ -6,15 +6,14 @@
     android:paddingTop="2dp">
 
     <ImageView
-        android:id="@+id/item_icon"
+        android:id="@+id/item_image_thumbnail"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:scaleType="fitXY"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dip"
-        android:contentDescription="TODO"
-        android:src="@drawable/test_image" />
+        android:contentDescription="item_image" />
 
     <TextView
         android:id="@+id/item_first_line"
@@ -23,7 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/item_icon"
+        android:layout_toRightOf="@id/item_image_thumbnail"
         android:gravity="center_vertical"
         android:textSize="18sp" />
 
@@ -33,7 +32,7 @@
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/item_icon"
+        android:layout_toRightOf="@id/item_image_thumbnail"
         android:layout_below="@id/item_first_line"
         android:ellipsize="marquee"
         android:singleLine="true"

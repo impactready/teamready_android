@@ -7,101 +7,109 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="org.impactready.teamready.FormActivityFragment">
+    tools:context="org.impactready.protea_io.FormActivityFragment">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="64dp"
-        android:text="@string/button_image_capture"
-        android:id="@+id/button_event_image"
-        android:layout_marginTop="-6dp"
-        android:textSize="18sp" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="64dp"
+            android:text="@string/button_image_capture"
+            android:id="@+id/button_event_image"
+            android:layout_marginTop="-6dp"
+            android:textSize="18sp" />
 
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_description"
-        android:id="@+id/label_event_description"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/input_event_description"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/image_event"
+            android:scaleType="centerCrop"
+            android:contentDescription="Event image"/>
 
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_event_type"
-        android:id="@+id/label_event_type"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <TextView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_description"
+            android:id="@+id/label_event_description"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <Spinner
-        android:id="@+id/input_event_type"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp"/>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/input_event_description"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_group"
-        android:id="@+id/label_group"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <TextView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_event_type"
+            android:id="@+id/label_event_type"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <Spinner
-        android:id="@+id/input_event_group"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <Spinner
+            android:id="@+id/input_event_type"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp"/>
 
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_longitude"
-        android:id="@+id/label_event_longitude"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <TextView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_group"
+            android:id="@+id/label_group"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/input_event_longitude"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <Spinner
+            android:id="@+id/input_event_group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <TextView android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_latitude"
-        android:id="@+id/label_event_latitude"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <TextView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_longitude"
+            android:id="@+id/label_event_longitude"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/input_event_latitude"
-        android:paddingLeft="2dp"
-        android:paddingTop="4dp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/input_event_longitude"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/input_event_submit"
-        android:layout_height="64dp"
-        android:textSize="18sp"
-        android:text="@string/label_submit" />
+        <TextView android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_latitude"
+            android:id="@+id/label_event_latitude"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/image_event"
-        android:scaleType="centerCrop"
-        android:contentDescription="Event image"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/input_event_latitude"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:id="@+id/input_event_submit"
+            android:layout_height="64dp"
+            android:textSize="18sp"
+            android:text="@string/label_submit" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:id="@+id/input_event_image_location" />
+
 
     </LinearLayout>
 </ScrollView>

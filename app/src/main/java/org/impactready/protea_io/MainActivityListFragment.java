@@ -1,4 +1,4 @@
-package org.impactready.teamready;
+package org.impactready.protea_io;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,8 +8,6 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class MainActivityListFragment extends ListFragment {
     private static final String TAG = "Listing";
@@ -29,13 +27,14 @@ public class MainActivityListFragment extends ListFragment {
         int counter = 0;
 
         String[] keys = new String[array_length];
-        String[][] items = new String[array_length][2];
+        String[][] items = new String[array_length][3];
 
         try {
 
             keys[counter] = "Events";
             items[counter][0] = "Events";
             items[counter][1] = "";
+            items[counter][2] = "";
 
             if (eventsJSON.length() > 0) {
 
@@ -46,6 +45,7 @@ public class MainActivityListFragment extends ListFragment {
 
                     items[counter][0] = event.getString("description");
                     items[counter][1] = event.getString("type");
+                    items[counter][2] = event.getString("image");
 
                 }
             }
@@ -55,6 +55,7 @@ public class MainActivityListFragment extends ListFragment {
             keys[counter] = "Stories";
             items[counter][0] = "Stories";
             items[counter][1] = "";
+            items[counter][2] = "";
 
             if (storiesJSON.length() > 0) {
 
@@ -65,6 +66,7 @@ public class MainActivityListFragment extends ListFragment {
 
                     items[counter][0] = story.getString("description");
                     items[counter][1] = story.getString("type");
+                    items[counter][2] = story.getString("image");
 
                 }
             }
@@ -75,6 +77,7 @@ public class MainActivityListFragment extends ListFragment {
             keys[counter] = "Measurements";
             items[counter][0] = "Measurements";
             items[counter][1] = "";
+            items[counter][2] = "";
 
             if (measurementsJSON.length() > 0) {
 
@@ -85,6 +88,7 @@ public class MainActivityListFragment extends ListFragment {
 
                     items[counter][0] = measurement.getString("description");
                     items[counter][1] = measurement.getString("type");
+                    items[counter][2] = measurement.getString("image");
 
                 }
             }

@@ -1,4 +1,4 @@
-package org.impactready.teamready;
+package org.impactready.protea_io;
 
 public class SpinnerElement {
     private String eText;

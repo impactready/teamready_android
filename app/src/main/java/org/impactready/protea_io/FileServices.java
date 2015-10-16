@@ -1,11 +1,9 @@
-package org.impactready.teamready;
+package org.impactready.protea_io;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

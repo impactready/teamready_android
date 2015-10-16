@@ -1,4 +1,4 @@
-package org.impactready.teamready;
+package org.impactready.protea_io;
 
 import android.location.Location;
 import android.location.LocationManager;
@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FormComponents {
     private static final String TAG = "Form Components";
@@ -75,6 +74,7 @@ public class FormComponents {
         Integer group = null;
         Integer longitude = null;
         Integer latitude = null;
+        Integer fileLocation = null;
 
         if (fragmentType.equals("event")) {
             description = R.id.input_event_description;
@@ -82,18 +82,21 @@ public class FormComponents {
             group = R.id.input_event_group;
             longitude = R.id.input_event_longitude;
             latitude = R.id.input_event_latitude;
+            fileLocation = R.id.input_event_image_location;
         } else if (fragmentType.equals("story")) {
             description = R.id.input_story_description;
             type = R.id.input_story_type;
             group = R.id.input_story_group;
             longitude = R.id.input_story_longitude;
             latitude = R.id.input_story_latitude;
+            fileLocation = R.id.input_story_image_location;
         } else if (fragmentType.equals("measurement")) {
             description = R.id.input_measurement_description;
             type = R.id.input_measurement_type;
             group = R.id.input_measurement_group;
             longitude = R.id.input_measurement_longitude;
             latitude = R.id.input_measurement_latitude;
+            fileLocation = R.id.input_measurement_image_location;
         }
 
         try {
@@ -102,6 +105,7 @@ public class FormComponents {
             eventJson.put("group", ((Spinner) v.findViewById(group)).getSelectedItem());
             eventJson.put("longitude", ((EditText) v.findViewById(longitude)).getText());
             eventJson.put("latitude", ((EditText) v.findViewById(latitude)).getText());
+            eventJson.put("image", ((EditText) v.findViewById(fileLocation)).getText());
 
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
