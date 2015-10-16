@@ -28,8 +28,26 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
         TextView textView1 = (TextView) rowView.findViewById(R.id.item_first_line);
         TextView textView2 = (TextView) rowView.findViewById(R.id.item_second_line);
 
-        Uri imageLocation = Uri.parse(values[position][2]);
-        imageView.setImageURI(imageLocation);
+
+        if (values[position][0] == "Events" || values[position][0] == "Stories" || values[position][0] == "Measurements") {
+
+            switch (values[position][0]) {
+                case "Events":
+                    imageView.setImageResource(R.drawable.image_event);
+                    break;
+                case "Stories":
+                    imageView.setImageResource(R.drawable.image_story);
+                    break;
+                case "Measurements":
+                    imageView.setImageResource(R.drawable.image_measurement);
+                    break;
+            }
+
+        } else {
+            Uri imageLocation = Uri.parse(values[position][2]);
+            imageView.setImageURI(imageLocation);
+        }
+
         textView1.setText(values[position][0]);
         textView2.setText(values[position][1]);
 
