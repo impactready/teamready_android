@@ -168,7 +168,7 @@ public class MainActivityKeyFragment extends Fragment {
             try {
                 conn = (HttpsURLConnection) new URL(url).openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setConnectTimeout(20000 /* milliseconds */);
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Authorization", basicAuth);
 
@@ -185,13 +185,15 @@ public class MainActivityKeyFragment extends Fragment {
 
                 parseAndSaveJson(builder);
 
-
             } catch (MalformedURLException e) {
                 Log.e(TAG, "MalformedURLException", e);
+                return 0;
             } catch (IOException e) {
                 Log.e(TAG, "IOException", e);
+                return 0;
             } catch (JSONException e) {
                 Log.e(TAG, "JSONException", e);
+                return 0;
             } finally {
                 if (is != null) {
                     conn.disconnect();
@@ -205,11 +207,16 @@ public class MainActivityKeyFragment extends Fragment {
 
         protected void onPostExecute(Integer result) {
             Context context = getActivity().getApplicationContext();
-            Log.d(TAG, "Result is ok: " + result.toString());
+            Log.d(TAG, "Result is: " + result.toString());
+            if (result == 1) {
+                setupLists(context, getView());
+                progress.dismiss();
+                Toast.makeText(context, "Setup downloaded.", Toast.LENGTH_SHORT).show();
+            } else {
+                progress.dismiss();
+                Toast.makeText(context, "Could not download setup.", Toast.LENGTH_SHORT).show();
+            }
 
-            setupLists(context, getView());
-            progress.dismiss();
-            Toast.makeText(context, "Setup downloaded", Toast.LENGTH_SHORT).show();
 
         }
 

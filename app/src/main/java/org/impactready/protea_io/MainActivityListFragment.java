@@ -83,7 +83,7 @@ public class MainActivityListFragment extends ListFragment {
 
                 for (int i = 0; i < measurementsJSON.length(); i++) {
                     counter++;
-                    JSONObject measurement = eventsJSON.getJSONObject(i);
+                    JSONObject measurement = measurementsJSON.getJSONObject(i);
                     keys[counter] = measurement.getString("description");
 
                     items[counter][0] = measurement.getString("description");
