@@ -121,7 +121,6 @@ public class MainActivityKeyFragment extends Fragment {
                 layoutParams.setMargins(3,5,5,0);
                 layoutParams.height = getResources().getDimensionPixelSize(R.dimen.setup_item_height);
                 typeItem.setLayoutParams(layoutParams);
-//                typeItem.setHeight(70);
                 typeItem.setBackgroundColor(Color.DKGRAY);
                 typeItem.setTextColor(Color.WHITE);
                 typeItem.setGravity(Gravity.CENTER);
@@ -155,8 +154,6 @@ public class MainActivityKeyFragment extends Fragment {
     class AccountSetupTask extends AsyncTask<String, Void, Integer> {
 
         protected Integer doInBackground(String... params) {
-            int groupCount = 0;
-            int typeCount = 0;
             InputStream is = null;
             HttpsURLConnection conn = null;
             BufferedReader reader = null;
@@ -216,8 +213,7 @@ public class MainActivityKeyFragment extends Fragment {
                 progress.dismiss();
                 Toast.makeText(context, "Could not download setup.", Toast.LENGTH_SHORT).show();
             }
-
-
+            
         }
 
     }
