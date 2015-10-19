@@ -109,4 +109,16 @@ public class FileServices {
         return Uri.fromFile(mediaFile);
 
     }
+
+    public static JSONArray removeJSONObject( JSONArray array, int pos) {
+
+        JSONArray newArray = new JSONArray();
+        try{
+            for(int i=0;i<array.length();i++){
+                if(i!=pos) newArray.put(array.get(i));
+            }
+        } catch (Exception e){e.printStackTrace();}
+        return newArray;
+
+    }
 }

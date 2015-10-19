@@ -15,6 +15,17 @@
         android:layout_marginRight="6dip"
         android:contentDescription="item_image" />
 
+    <ImageView
+        android:id="@+id/item_image_delete"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="fitXY"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="6dip"
+        android:contentDescription="item_image" />
+
     <TextView
         android:id="@+id/item_first_line"
         android:layout_width="fill_parent"
@@ -23,6 +34,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/item_image_thumbnail"
+        android:layout_toLeftOf="@id/item_image_delete"
         android:gravity="center_vertical"
         android:textSize="18sp" />
 
@@ -31,12 +43,11 @@
         android:layout_width="fill_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/item_image_thumbnail"
+        android:layout_toLeftOf="@id/item_image_delete"
         android:layout_below="@id/item_first_line"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:textSize="12sp" />
-
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class FormComponents {
     private static final String TAG = "Form Components";
@@ -106,6 +107,7 @@ public class FormComponents {
             eventJson.put("longitude", ((EditText) v.findViewById(longitude)).getText());
             eventJson.put("latitude", ((EditText) v.findViewById(latitude)).getText());
             eventJson.put("image", ((EditText) v.findViewById(fileLocation)).getText());
+            eventJson.put("id", UUID.randomUUID().toString());
 
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);

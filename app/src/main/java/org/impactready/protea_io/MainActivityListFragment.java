@@ -27,7 +27,7 @@ public class MainActivityListFragment extends ListFragment {
         int counter = 0;
 
         String[] keys = new String[array_length];
-        String[][] items = new String[array_length][3];
+        String[][] items = new String[array_length][5];
 
         try {
 
@@ -35,6 +35,9 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][0] = "Events";
             items[counter][1] = "";
             items[counter][2] = "";
+            items[counter][3] = "";
+            items[counter][4] = "";
+
 
             if (eventsJSON.length() > 0) {
 
@@ -46,6 +49,8 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][0] = event.getString("description");
                     items[counter][1] = event.getString("type");
                     items[counter][2] = event.getString("image");
+                    items[counter][3] = event.getString("id");
+                    items[counter][4] = getString(R.string.event_main_name);
 
                 }
             }
@@ -56,6 +61,8 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][0] = "Stories";
             items[counter][1] = "";
             items[counter][2] = "";
+            items[counter][3] = "";
+            items[counter][4] = "";
 
             if (storiesJSON.length() > 0) {
 
@@ -67,6 +74,8 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][0] = story.getString("description");
                     items[counter][1] = story.getString("type");
                     items[counter][2] = story.getString("image");
+                    items[counter][3] = story.getString("id");
+                    items[counter][4] = getString(R.string.story_main_name);;
 
                 }
             }
@@ -78,6 +87,8 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][0] = "Measurements";
             items[counter][1] = "";
             items[counter][2] = "";
+            items[counter][3] = "";
+            items[counter][4] = "";
 
             if (measurementsJSON.length() > 0) {
 
@@ -89,6 +100,8 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][0] = measurement.getString("description");
                     items[counter][1] = measurement.getString("type");
                     items[counter][2] = measurement.getString("image");
+                    items[counter][3] = measurement.getString("id");
+                    items[counter][4] = getString(R.string.measurement_main_name);
 
                 }
             }

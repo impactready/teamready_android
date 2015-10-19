@@ -213,7 +213,7 @@ public class MainActivityKeyFragment extends Fragment {
                 progress.dismiss();
                 Toast.makeText(context, "Could not download setup.", Toast.LENGTH_SHORT).show();
             }
-            
+
         }
 
     }
