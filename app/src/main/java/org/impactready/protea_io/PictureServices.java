@@ -11,7 +11,7 @@ import android.view.WindowManager;
 
 public class PictureServices {
 
-    public static Bitmap setPicture(Context context, Uri imageLocation) {
+    public static Bitmap setPicture(Context context, Uri imageLocation, int height, int sampleSize) {
         Bitmap bitmap;
         // Get the dimensions of the View
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -19,7 +19,7 @@ public class PictureServices {
         Point size = new Point();
         display.getSize(size);
         int targetW = size.x - 5;
-        int targetH = 600;
+        int targetH = height;
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -30,7 +30,7 @@ public class PictureServices {
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = 4;
+        bmOptions.inSampleSize = sampleSize;
 
         bitmap = BitmapFactory.decodeFile(imageLocation.getPath(), bmOptions);
         return bitmap;

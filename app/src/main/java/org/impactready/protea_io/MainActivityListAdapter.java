@@ -2,6 +2,7 @@ package org.impactready.protea_io;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,6 @@ import java.io.IOException;
 public class MainActivityListAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[][] values;
-    private String listItemId = null;
-    private String listItemType = null;
     private static final String TAG = "List adapter";
 
     public MainActivityListAdapter(Context context, int layoutId, String[][] values, String[] keys) {
@@ -59,64 +58,54 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
         } else {
 
             Uri imageLocation = Uri.parse(values[position][2]);
-            imageView.setImageURI(imageLocation);
-            deleteView.setImageResource(R.drawable.image_delete);
+            Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation, 100, 8);
+            imageView.setImageBitmap(imageBitmap);
+
+            deleteView.setImageResource(android.R.drawable.ic_delete);
+            deleteView.setTag(values[position][3]);
+            deleteView.setOnClickListener(new View.OnClickListener() {
+                JSONArray objectsJSON = null;
+
+                @Override
+                public void onClick(View v) {
+
+                    try {
+
+                        Integer files[] = {R.string.events_filename,
+                                R.string.stories_filename,
+                                R.string.measurements_filename};
+
+                        for (int j = 0; j < files.length; j++) {
+
+                            objectsJSON = FileServices.getFileJSON(context, files[j]);
+
+                            JSONArray newObjectsJSON = new JSONArray();
+                            for (int i = 0; i < objectsJSON.length(); i++) {
+                                JSONObject thisObject = objectsJSON.getJSONObject(i);
+                                if (!thisObject.getString("id").equals(v.getTag().toString())) {
+                                    newObjectsJSON.put(thisObject);
+                                }
+                            }
+                            FileServices.writeFileJson(context, files[j], newObjectsJSON);
+                            Toast.makeText(context, "Item deleted.", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.putExtra("listview", true);
+                            context.startActivity(intent);
+                        }
+
+
+                    } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
+                    } catch (IOException e) {
+                        Log.e(TAG, "IOException", e);
+                    }
+                }
+            });
         }
 
         textView1.setText(values[position][0]);
         textView2.setText(values[position][1]);
-        listItemId = values[position][3];
-        listItemType = values[position][4];
-
-        deleteView.setOnClickListener(new View.OnClickListener() {
-            JSONArray objectsJSON = null;
-            Integer fileId = null;
-
-            @Override
-            public void onClick(View v) {
-                switch (listItemType) {
-                    case "event":
-                        fileId = R.string.events_filename;
-                        break;
-                    case "story":
-                        fileId = R.string.stories_filename;
-                        break;
-                    case "measurement":
-                        fileId = R.string.measurements_filename;
-                        break;
-                    default:
-                        fileId = null;
-                        break;
-                }
-
-                try {
-                    if (fileId != null) {
-                        objectsJSON = FileServices.getFileJSON(context, fileId);
-
-                        JSONArray newObjectsJSON = new JSONArray();
-                        for (int i = 0; i < objectsJSON.length(); i++) {
-                            JSONObject thisObject = objectsJSON.getJSONObject(i);
-                            if (thisObject.getString("id") != listItemId) {
-                                newObjectsJSON.put(thisObject);
-                            }
-                        }
-                        FileServices.writeFileJson(context, fileId, newObjectsJSON);
-                        Toast.makeText(context, "Item deleted.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, MainActivity.class);
-                        context.startActivity(intent);
-                    }
-
-
-
-
-
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                } catch (IOException e) {
-                    Log.e(TAG, "IOException", e);
-                }
-            }
-        });
 
         return rowView;
     }

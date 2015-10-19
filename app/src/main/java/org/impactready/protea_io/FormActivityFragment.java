@@ -252,7 +252,7 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                     imageText = (EditText) getView().findViewById(R.id.input_measurement_image_location);
                 }
 
-                Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation);
+                Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation, 400, 6);
                 imageView.setImageBitmap(imageBitmap);
                 ViewGroup.LayoutParams params = imageView.getLayoutParams();
                 params.height = getResources().getDimensionPixelSize(R.dimen.image_view_height);
