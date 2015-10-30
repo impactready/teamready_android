@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -73,15 +74,15 @@ public class NetworkServices {
         HttpsURLConnection conn = null;
         BufferedReader reader = null;
         String postParameters = null;
-        String url = "https://impactready.herokuapp.com/api/v1/android/setup";
+        String url = "https://impactready.herokuapp.com/api/v1/android/";
         String userCredentials = "api:" + params;
         String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.NO_WRAP));
 
         try {
 
             conn = (HttpsURLConnection) new URL(url).openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(20000 /* milliseconds */);
+            conn.setReadTimeout(1000 /* milliseconds */);
+            conn.setConnectTimeout(2000 /* milliseconds */);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", basicAuth);
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -97,7 +98,7 @@ public class NetworkServices {
             conn.setFixedLengthStreamingMode(
                     postParameters.getBytes().length);
             OutputStream os = conn.getOutputStream();
-            os.write(postParameters.toString().getBytes("UTF-8"));
+            os.write(URLEncoder.encode(postParameters.toString(), "UTF-8").getBytes("UTF-8"));
             os.close();
 
 

@@ -25,7 +25,7 @@
     <string name="label_measurement_type">Indicator</string>
 
     <string name="button_key_save">Save API key</string>
-    <string name="button_account_setup">Download setup</string>
+    <string name="button_account_setup">Sync Data</string>
 
     <string name="types_filename">protea_types.txt</string>
     <string name="groups_filename">protea_groups.txt</string>

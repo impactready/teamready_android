@@ -172,15 +172,15 @@ public class MainActivityKeyFragment extends Fragment {
                     R.string.measurements_filename};
 
                 for (int j = 0; j < files.length; j++) {
-                    switch (j) {
+                    switch (files[j]) {
                         case R.string.events_filename:
                             objectType = getString(R.string.event_main_name);
                             break;
                         case R.string.stories_filename:
-                            objectType = getString(R.string.event_main_name);
+                            objectType = getString(R.string.story_main_name);
                             break;
                         case R.string.measurements_filename:
-                            objectType = getString(R.string.event_main_name);
+                            objectType = getString(R.string.measurement_main_name);
                             break;
 
                     }
@@ -188,7 +188,7 @@ public class MainActivityKeyFragment extends Fragment {
                     objectsJSON = FileServices.getFileJSON(context, files[j]);
                     for (int i = 0; i < objectsJSON.length(); i++) {
                         JSONObject thisObject = objectsJSON.getJSONObject(i);
-                        if (thisObject.getString("uploaded") == "no") {
+                        if (thisObject.getString("uploaded").equals("no")) {
                             thisObject.put("object_type", objectType);
                             result = new JSONObject(NetworkServices.sendObject(params[0], thisObject).toString());
                             if (result.get("result_ok") == true) {
@@ -229,7 +229,7 @@ public class MainActivityKeyFragment extends Fragment {
                 Toast.makeText(context, "Sync complete.", Toast.LENGTH_SHORT).show();
             } else {
                 progress.dismiss();
-                Toast.makeText(context, "Could not download setup.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Could not sync data.", Toast.LENGTH_SHORT).show();
             }
 
         }
