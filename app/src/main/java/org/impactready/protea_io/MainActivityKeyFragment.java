@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,14 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivityKeyFragment extends Fragment {
     private static final String TAG = "Account Setup Task";
@@ -87,8 +79,13 @@ public class MainActivityKeyFragment extends Fragment {
                         String apiKey = settings.getString("apiKey", "");
 
                         if (apiKey != "") {
-                            progress = ProgressDialog.show(getActivity(), "Setup", "Downloading setup..", true);
-                            new AccountSetupTask().execute(apiKey);
+                            progress = ProgressDialog.show(getActivity(), "Sync", "Uploading data..", true);
+                            ObjectUploadTask uploadTask = new ObjectUploadTask();
+                            uploadTask.execute(apiKey);
+                            if (uploadTask != null && uploadTask.getStatus() == AsyncTask.Status.FINISHED) {
+                                progress = ProgressDialog.show(getActivity(), "Sync", "Downloading setup..", true);
+                                new AccountSetupTask().execute(apiKey);
+                            }
                         } else {
                             Toast.makeText(context, "You do not have an API key set", Toast.LENGTH_SHORT).show();
                         }
@@ -151,73 +148,6 @@ public class MainActivityKeyFragment extends Fragment {
 
     }
 
-    class AccountSetupTask extends AsyncTask<String, Void, Integer> {
-
-        protected Integer doInBackground(String... params) {
-            InputStream is = null;
-            HttpsURLConnection conn = null;
-            BufferedReader reader = null;
-            String url = "https://impactready.herokuapp.com/api/v1/android/setup";
-            String userCredentials = "api:" + params[0];
-            String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.NO_WRAP));
-            String contentAsString = "";
-
-            try {
-                conn = (HttpsURLConnection) new URL(url).openConnection();
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(20000 /* milliseconds */);
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Authorization", basicAuth);
-
-                is = new BufferedInputStream(conn.getInputStream());
-
-                InputStreamReader streamReader = new InputStreamReader(is);
-                reader = new BufferedReader(streamReader);
-                StringBuilder builder = new StringBuilder();
-                String line = reader.readLine();
-                while (line != null) {
-                    builder.append(line);
-                    line = reader.readLine();
-                }
-
-                parseAndSaveJson(builder);
-
-            } catch (MalformedURLException e) {
-                Log.e(TAG, "MalformedURLException", e);
-                return 0;
-            } catch (IOException e) {
-                Log.e(TAG, "IOException", e);
-                return 0;
-            } catch (JSONException e) {
-                Log.e(TAG, "JSONException", e);
-                return 0;
-            } finally {
-                if (is != null) {
-                    conn.disconnect();
-                }
-            }
-            Log.e(TAG, contentAsString);
-
-            return 1;
-        }
-
-
-        protected void onPostExecute(Integer result) {
-            Context context = getActivity().getApplicationContext();
-            Log.d(TAG, "Result is: " + result.toString());
-            if (result == 1) {
-                setupLists(context, getView());
-                progress.dismiss();
-                Toast.makeText(context, "Setup downloaded.", Toast.LENGTH_SHORT).show();
-            } else {
-                progress.dismiss();
-                Toast.makeText(context, "Could not download setup.", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-    }
-
     protected void parseAndSaveJson(StringBuilder jsonString) throws IOException, JSONException {
         final Context context = getActivity().getApplicationContext();
 
@@ -227,6 +157,114 @@ public class MainActivityKeyFragment extends Fragment {
 
         FileServices.writeFileJson(context, R.string.types_filename, typesJSON);
         FileServices.writeFileJson(context, R.string.groups_filename, groupsJSON);
+
+    }
+
+    class AccountSetupTask extends AsyncTask<String, Void, Integer> {
+
+        protected Integer doInBackground(String... params) {
+
+            StringBuilder builder = NetworkServices.getSetup(params[0]);
+            if (builder.toString() != "") {
+                try {
+                    parseAndSaveJson(builder);
+                    return 1;
+                } catch (IOException e) {
+                    Log.e(TAG, "IOException", e);
+                    return 0;
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    return 0;
+                }
+            }
+            return 0;
+        }
+
+
+        protected void onPostExecute(Integer result) {
+            Context context = getActivity().getApplicationContext();
+            Log.d(TAG, "Result is: " + result.toString());
+            if (result == 1) {
+                setupLists(context, getView());
+                progress.dismiss();
+                Toast.makeText(context, "Sync complete.", Toast.LENGTH_SHORT).show();
+            } else {
+                progress.dismiss();
+                Toast.makeText(context, "Could not download setup.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
+
+
+    class ObjectUploadTask extends AsyncTask<String, Void, Integer> {
+
+        protected Integer doInBackground(String... params) {
+            Context context = getActivity().getApplicationContext();
+            String objectType = null;
+            JSONObject result = null;
+            JSONArray objectsJSON = null;
+
+            try {
+
+                Integer files[] = {R.string.events_filename,
+                        R.string.stories_filename,
+                        R.string.measurements_filename};
+
+                for (int j = 0; j < files.length; j++) {
+                    switch (j) {
+                        case R.string.events_filename:
+                            objectType = getString(R.string.event_main_name);
+                            break;
+                        case R.string.stories_filename:
+                            objectType = getString(R.string.event_main_name);
+                            break;
+                        case R.string.measurements_filename:
+                            objectType = getString(R.string.event_main_name);
+                            break;
+
+                    }
+                    objectsJSON = FileServices.getFileJSON(context, files[j]);
+                    for (int i = 0; i < objectsJSON.length(); j++) {
+                        JSONObject thisObject = objectsJSON.getJSONObject(i);
+                        if (thisObject.getString("uploaded") == "no") {
+                            thisObject.put("object_type", objectType);
+                            result = new JSONObject(NetworkServices.sendObject(params[0], thisObject).toString());
+                            if (result.get("result_ok") == true) {
+                                JSONArray newObjectsJSON = JSONServices.remove(objectsJSON, thisObject.getString("object_id"));
+                                thisObject.put("uploaded", "yes");
+                                newObjectsJSON.put(thisObject);
+                                FileServices.writeFileJson(context, files[j], newObjectsJSON);
+                            }
+                        }
+                    }
+
+                }
+
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                return 0;
+            } catch (IOException e) {
+                Log.e(TAG, "IOException", e);
+                return 0;
+            }
+
+            return 1;
+        }
+
+
+        protected void onPostExecute(Integer result) {
+            Context context = getActivity().getApplicationContext();
+            Log.d(TAG, "Result is: " + result.toString());
+            progress.dismiss();
+            if (result == 1) {
+
+            } else {
+                Toast.makeText(context, "Could not upload data.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
     }
 }

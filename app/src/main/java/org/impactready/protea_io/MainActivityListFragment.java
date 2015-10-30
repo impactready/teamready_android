@@ -48,7 +48,7 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][0] = event.getString("description");
                     items[counter][1] = event.getString("type");
                     items[counter][2] = event.getString("image");
-                    items[counter][3] = event.getString("id");
+                    items[counter][3] = event.getString("object_id");
 
                 }
             }
@@ -71,7 +71,7 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][0] = story.getString("description");
                     items[counter][1] = story.getString("type");
                     items[counter][2] = story.getString("image");
-                    items[counter][3] = story.getString("id");
+                    items[counter][3] = story.getString("object_id");
 
                 }
             }
@@ -95,7 +95,7 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][0] = measurement.getString("description");
                     items[counter][1] = measurement.getString("type");
                     items[counter][2] = measurement.getString("image");
-                    items[counter][3] = measurement.getString("id");
+                    items[counter][3] = measurement.getString("object_id");
 
                 }
             }

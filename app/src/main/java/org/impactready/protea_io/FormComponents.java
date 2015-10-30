@@ -107,7 +107,8 @@ public class FormComponents {
             eventJson.put("longitude", ((EditText) v.findViewById(longitude)).getText());
             eventJson.put("latitude", ((EditText) v.findViewById(latitude)).getText());
             eventJson.put("image", ((EditText) v.findViewById(fileLocation)).getText());
-            eventJson.put("id", UUID.randomUUID().toString());
+            eventJson.put("object_id", UUID.randomUUID().toString());
+            eventJson.put("uploaded", "no");
 
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);

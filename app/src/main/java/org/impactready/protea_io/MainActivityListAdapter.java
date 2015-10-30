@@ -79,13 +79,7 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
 
                             objectsJSON = FileServices.getFileJSON(context, files[j]);
 
-                            JSONArray newObjectsJSON = new JSONArray();
-                            for (int i = 0; i < objectsJSON.length(); i++) {
-                                JSONObject thisObject = objectsJSON.getJSONObject(i);
-                                if (!thisObject.getString("id").equals(v.getTag().toString())) {
-                                    newObjectsJSON.put(thisObject);
-                                }
-                            }
+                            JSONArray newObjectsJSON = JSONServices.remove(objectsJSON, v.getTag().toString());
                             FileServices.writeFileJson(context, files[j], newObjectsJSON);
                             Toast.makeText(context, "Item deleted.", Toast.LENGTH_SHORT).show();
 
@@ -95,8 +89,6 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
                         }
 
 
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
                     } catch (IOException e) {
                         Log.e(TAG, "IOException", e);
                     }
@@ -104,7 +96,12 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
             });
         }
 
-        textView1.setText(values[position][0]);
+        if (values[position][0].length() > 28) {
+            textView1.setText(values[position][0].substring(0, 25) + "...");
+        } else {
+            textView1.setText(values[position][0]);
+        }
+
         textView2.setText(values[position][1]);
 
         return rowView;
