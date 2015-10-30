@@ -84,15 +84,15 @@ public class NetworkServices {
             conn.setConnectTimeout(20000 /* milliseconds */);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", basicAuth);
-            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setDoOutput(true);
 
             postParameters = "?description=" + objectJSON.getString("description");
             postParameters += "&type=" + objectJSON.getString("type");
-            postParameters += "?group=" + objectJSON.getString("group");
-            postParameters += "?longitude=" + objectJSON.getString("longitude");
-            postParameters += "?latitude=" + objectJSON.getString("latitude");
-            postParameters += "?object_id=" + objectJSON.getString("object_id");
+            postParameters += "&group=" + objectJSON.getString("group");
+            postParameters += "&longitude=" + objectJSON.getString("longitude");
+            postParameters += "&latitude=" + objectJSON.getString("latitude");
+            postParameters += "&object_id=" + objectJSON.getString("object_id");
 
             conn.setFixedLengthStreamingMode(
                     postParameters.getBytes().length);

@@ -79,13 +79,9 @@ public class MainActivityKeyFragment extends Fragment {
                         String apiKey = settings.getString("apiKey", "");
 
                         if (apiKey != "") {
-                            progress = ProgressDialog.show(getActivity(), "Sync", "Uploading data..", true);
-                            ObjectUploadTask uploadTask = new ObjectUploadTask();
-                            uploadTask.execute(apiKey);
-                            if (uploadTask != null && uploadTask.getStatus() == AsyncTask.Status.FINISHED) {
-                                progress = ProgressDialog.show(getActivity(), "Sync", "Downloading setup..", true);
-                                new AccountSetupTask().execute(apiKey);
-                            }
+                            progress = ProgressDialog.show(getActivity(), "Sync", "Syncing data, this may take a few minutes...", true);
+                            new DataSyncTask().execute(apiKey);
+
                         } else {
                             Toast.makeText(context, "You do not have an API key set", Toast.LENGTH_SHORT).show();
                         }
@@ -160,24 +156,67 @@ public class MainActivityKeyFragment extends Fragment {
 
     }
 
-    class AccountSetupTask extends AsyncTask<String, Void, Integer> {
+    class DataSyncTask extends AsyncTask<String, Void, Integer> {
 
         protected Integer doInBackground(String... params) {
+            Context context = getActivity().getApplicationContext();
+            String objectType = null;
+            JSONObject result = null;
+            JSONArray objectsJSON = null;
 
-            StringBuilder builder = NetworkServices.getSetup(params[0]);
-            if (builder.toString() != "") {
-                try {
-                    parseAndSaveJson(builder);
-                    return 1;
-                } catch (IOException e) {
-                    Log.e(TAG, "IOException", e);
-                    return 0;
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    return 0;
+            try {
+
+                // The data upload part
+                Integer files[] = {R.string.events_filename,
+                    R.string.stories_filename,
+                    R.string.measurements_filename};
+
+                for (int j = 0; j < files.length; j++) {
+                    switch (j) {
+                        case R.string.events_filename:
+                            objectType = getString(R.string.event_main_name);
+                            break;
+                        case R.string.stories_filename:
+                            objectType = getString(R.string.event_main_name);
+                            break;
+                        case R.string.measurements_filename:
+                            objectType = getString(R.string.event_main_name);
+                            break;
+
+                    }
+
+                    objectsJSON = FileServices.getFileJSON(context, files[j]);
+                    for (int i = 0; i < objectsJSON.length(); i++) {
+                        JSONObject thisObject = objectsJSON.getJSONObject(i);
+                        if (thisObject.getString("uploaded") == "no") {
+                            thisObject.put("object_type", objectType);
+                            result = new JSONObject(NetworkServices.sendObject(params[0], thisObject).toString());
+                            if (result.get("result_ok") == true) {
+                                JSONArray newObjectsJSON = JSONServices.remove(objectsJSON, thisObject.getString("object_id"));
+                                thisObject.put("uploaded", "yes");
+                                newObjectsJSON.put(thisObject);
+                                FileServices.writeFileJson(context, files[j], newObjectsJSON);
+                            }
+                        }
+                    }
+
                 }
+
+                // The setup download part
+                StringBuilder builder = NetworkServices.getSetup(params[0]);
+                if (builder == null || builder.toString() == "") {
+                   return 0;
+                }
+                parseAndSaveJson(builder);
+                return 1;
+
+            } catch (IOException e) {
+                Log.e(TAG, "IOException", e);
+                return 0;
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                return 0;
             }
-            return 0;
         }
 
 
@@ -197,74 +236,4 @@ public class MainActivityKeyFragment extends Fragment {
 
     }
 
-
-    class ObjectUploadTask extends AsyncTask<String, Void, Integer> {
-
-        protected Integer doInBackground(String... params) {
-            Context context = getActivity().getApplicationContext();
-            String objectType = null;
-            JSONObject result = null;
-            JSONArray objectsJSON = null;
-
-            try {
-
-                Integer files[] = {R.string.events_filename,
-                        R.string.stories_filename,
-                        R.string.measurements_filename};
-
-                for (int j = 0; j < files.length; j++) {
-                    switch (j) {
-                        case R.string.events_filename:
-                            objectType = getString(R.string.event_main_name);
-                            break;
-                        case R.string.stories_filename:
-                            objectType = getString(R.string.event_main_name);
-                            break;
-                        case R.string.measurements_filename:
-                            objectType = getString(R.string.event_main_name);
-                            break;
-
-                    }
-                    objectsJSON = FileServices.getFileJSON(context, files[j]);
-                    for (int i = 0; i < objectsJSON.length(); j++) {
-                        JSONObject thisObject = objectsJSON.getJSONObject(i);
-                        if (thisObject.getString("uploaded") == "no") {
-                            thisObject.put("object_type", objectType);
-                            result = new JSONObject(NetworkServices.sendObject(params[0], thisObject).toString());
-                            if (result.get("result_ok") == true) {
-                                JSONArray newObjectsJSON = JSONServices.remove(objectsJSON, thisObject.getString("object_id"));
-                                thisObject.put("uploaded", "yes");
-                                newObjectsJSON.put(thisObject);
-                                FileServices.writeFileJson(context, files[j], newObjectsJSON);
-                            }
-                        }
-                    }
-
-                }
-
-            } catch (JSONException e) {
-                Log.e(TAG, "JSONException", e);
-                return 0;
-            } catch (IOException e) {
-                Log.e(TAG, "IOException", e);
-                return 0;
-            }
-
-            return 1;
-        }
-
-
-        protected void onPostExecute(Integer result) {
-            Context context = getActivity().getApplicationContext();
-            Log.d(TAG, "Result is: " + result.toString());
-            progress.dismiss();
-            if (result == 1) {
-
-            } else {
-                Toast.makeText(context, "Could not upload data.", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-    }
 }
