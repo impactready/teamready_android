@@ -74,7 +74,7 @@ public class NetworkServices {
         HttpsURLConnection conn = null;
         BufferedReader reader = null;
         String postParameters = null;
-        String url = "https://impactready.herokuapp.com/api/v1/android/";
+        String url = "https://impactready.herokuapp.com/api/v1/android/create";
         String userCredentials = "api:" + params;
         String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.NO_WRAP));
 
@@ -86,22 +86,23 @@ public class NetworkServices {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", basicAuth);
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setDoOutput(true);
 
-            postParameters = "?description=" + objectJSON.getString("description");
+            postParameters = "object_type=" + objectJSON.getString("object_type");
+            postParameters += "&object_id=" + objectJSON.getString("object_id");
+            postParameters += "&description=" + objectJSON.getString("description");
             postParameters += "&type=" + objectJSON.getString("type");
             postParameters += "&group=" + objectJSON.getString("group");
             postParameters += "&longitude=" + objectJSON.getString("longitude");
             postParameters += "&latitude=" + objectJSON.getString("latitude");
-            postParameters += "&object_id=" + objectJSON.getString("object_id");
 
+//            postParameters = URLEncoder.encode(postParameters, "UTF-8");
             conn.setFixedLengthStreamingMode(
-                    postParameters.getBytes().length);
+                    postParameters.getBytes("UTF-8").length);
             OutputStream os = conn.getOutputStream();
-            os.write(URLEncoder.encode(postParameters.toString(), "UTF-8").getBytes("UTF-8"));
+            os.write(postParameters.getBytes("UTF-8"));
             os.close();
 
-
+            int response = conn.getResponseCode();
             is = new BufferedInputStream(conn.getInputStream());
 
             InputStreamReader streamReader = new InputStreamReader(is);
