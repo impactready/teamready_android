@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -85,22 +87,38 @@ public class NetworkServices {
             conn.setConnectTimeout(2000 /* milliseconds */);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", basicAuth);
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-            postParameters = "object_type=" + objectJSON.getString("object_type");
-            postParameters += "&object_id=" + objectJSON.getString("object_id");
-            postParameters += "&description=" + objectJSON.getString("description");
-            postParameters += "&type=" + objectJSON.getString("type");
-            postParameters += "&group=" + objectJSON.getString("group");
-            postParameters += "&longitude=" + objectJSON.getString("longitude");
-            postParameters += "&latitude=" + objectJSON.getString("latitude");
 
-//            postParameters = URLEncoder.encode(postParameters, "UTF-8");
-            conn.setFixedLengthStreamingMode(
-                    postParameters.getBytes("UTF-8").length);
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart("image", new FileBody(new File(objectJSON.getString("image")));
+            reqEntity.addPart("object_type", objectJSON.getString("object_type"));
+            reqEntity.addPart("object_id", objectJSON.getString("object_id"));
+            reqEntity.addPart("description", objectJSON.getString("description"));
+            reqEntity.addPart("type", objectJSON.getString("type"));
+            reqEntity.addPart("group", objectJSON.getString("group"));
+            reqEntity.addPart("longitude", objectJSON.getString("longitude"));
+            reqEntity.addPart("latitude", objectJSON.getString("latitude"));
+
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + reqEntity.getContentLength()+"");
             OutputStream os = conn.getOutputStream();
-            os.write(postParameters.getBytes("UTF-8"));
+            reqEntity.writeTo(conn.getOutputStream());
             os.close();
+
+//            postParameters = "object_type=" + objectJSON.getString("object_type");
+//            postParameters += "&object_id=" + objectJSON.getString("object_id");
+//            postParameters += "&description=" + objectJSON.getString("description");
+//            postParameters += "&type=" + objectJSON.getString("type");
+//            postParameters += "&group=" + objectJSON.getString("group");
+//            postParameters += "&longitude=" + objectJSON.getString("longitude");
+//            postParameters += "&latitude=" + objectJSON.getString("latitude");
+//
+////            postParameters = URLEncoder.encode(postParameters, "UTF-8");
+//            conn.setFixedLengthStreamingMode(
+//                    postParameters.getBytes("UTF-8").length);
+//            OutputStream os = conn.getOutputStream();
+//            os.write(postParameters.getBytes("UTF-8"));
+//            os.close();
 
             int response = conn.getResponseCode();
             is = new BufferedInputStream(conn.getInputStream());
@@ -113,6 +131,8 @@ public class NetworkServices {
                 builder.append(line);
                 line = reader.readLine();
             }
+            streamReader.close();
+            reader.close();
 
             return builder;
 
