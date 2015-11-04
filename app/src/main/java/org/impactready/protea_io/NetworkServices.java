@@ -14,15 +14,21 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 public class NetworkServices {
     private static final String TAG = "Network Services";
@@ -37,6 +43,12 @@ public class NetworkServices {
 
 
         try {
+            SSLContext sslcontext = SSLContext.getInstance("TLSv1");
+
+            sslcontext.init(null, null, null);
+            SSLSocketFactory NoSSLv3Factory = new NoSSLv3SocketFactory(sslcontext.getSocketFactory());
+
+            HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory);
 
             conn = (HttpsURLConnection) new URL(url).openConnection();
             conn.setReadTimeout(10000 /* milliseconds */);
@@ -58,6 +70,15 @@ public class NetworkServices {
             Log.e(TAG, builder.toString());
             return builder;
 
+        } catch (FileNotFoundException e){
+            Log.e(TAG, "FileNotFoundException", e);
+            return null;
+        } catch (KeyManagementException e){
+            Log.e(TAG, "KeyManagementException", e);
+            return null;
+        } catch (NoSuchAlgorithmException e){
+            Log.e(TAG, "NoSuchAlgorithmException", e);
+            return null;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException", e);
             return null;
@@ -85,15 +106,20 @@ public class NetworkServices {
         String boundary = "---+++---";
 
         try {
+            SSLContext sslcontext = SSLContext.getInstance("TLSv1");
+
+            sslcontext.init(null, null, null);
+            SSLSocketFactory NoSSLv3Factory = new NoSSLv3SocketFactory(sslcontext.getSocketFactory());
+
+            HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory);
 
             conn = (HttpsURLConnection) new URL(url).openConnection();
             conn.setReadTimeout(1000 /* milliseconds */);
             conn.setConnectTimeout(2000 /* milliseconds */);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", basicAuth);
-//            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" +  boundary);
-
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            conn.setChunkedStreamingMode(1024);
 
             MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
             reqEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -107,7 +133,6 @@ public class NetworkServices {
             reqEntity.addPart("longitude", new StringBody(objectJSON.getString("longitude"), ContentType.TEXT_PLAIN));
             reqEntity.addPart("latitude", new StringBody(objectJSON.getString("latitude"), ContentType.TEXT_PLAIN));
 
-            conn.setChunkedStreamingMode(1024);
 //            conn.setRequestProperty("Content-Length", String.valueOf(reqEntity.build().getContentLength()));
 
             OutputStream os = conn.getOutputStream();
@@ -145,6 +170,18 @@ public class NetworkServices {
 
             return builder;
 
+        } catch (FileNotFoundException e){
+            Log.e(TAG, "FileNotFoundException", e);
+            return null;
+        } catch (KeyManagementException e){
+            Log.e(TAG, "KeyManagementException", e);
+            return null;
+        } catch (NoSuchAlgorithmException e){
+            Log.e(TAG, "NoSuchAlgorithmException", e);
+            return null;
+        } catch (SocketTimeoutException e){
+            Log.e(TAG, "SocketTimeoutException", e);
+            return null;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException", e);
             return null;
