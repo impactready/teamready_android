@@ -3,6 +3,10 @@ package org.impactready.protea_io;
 import android.util.Base64;
 import android.util.Log;
 
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +21,6 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -79,6 +82,7 @@ public class NetworkServices {
         String url = "https://impactready.herokuapp.com/api/v1/android/create";
         String userCredentials = "api:" + params;
         String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.NO_WRAP));
+        String boundary = "---+++---";
 
         try {
 
@@ -88,21 +92,26 @@ public class NetworkServices {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", basicAuth);
 //            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" +  boundary);
 
 
-            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-            reqEntity.addPart("image", new FileBody(new File(objectJSON.getString("image")));
-            reqEntity.addPart("object_type", objectJSON.getString("object_type"));
-            reqEntity.addPart("object_id", objectJSON.getString("object_id"));
-            reqEntity.addPart("description", objectJSON.getString("description"));
-            reqEntity.addPart("type", objectJSON.getString("type"));
-            reqEntity.addPart("group", objectJSON.getString("group"));
-            reqEntity.addPart("longitude", objectJSON.getString("longitude"));
-            reqEntity.addPart("latitude", objectJSON.getString("latitude"));
+            MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
+            reqEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.setBoundary(boundary);
+            reqEntity.addPart("image", new FileBody(new File(objectJSON.getString("image").substring(7))));
+            reqEntity.addPart("object_type", new StringBody(objectJSON.getString("object_type"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object_id", new StringBody(objectJSON.getString("object_id"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("description", new StringBody(objectJSON.getString("description"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("type", new StringBody(objectJSON.getString("type"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("group", new StringBody(objectJSON.getString("group"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("longitude", new StringBody(objectJSON.getString("longitude"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("latitude", new StringBody(objectJSON.getString("latitude"), ContentType.TEXT_PLAIN));
 
-            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + reqEntity.getContentLength()+"");
+            conn.setChunkedStreamingMode(1024);
+//            conn.setRequestProperty("Content-Length", String.valueOf(reqEntity.build().getContentLength()));
+
             OutputStream os = conn.getOutputStream();
-            reqEntity.writeTo(conn.getOutputStream());
+            reqEntity.build().writeTo(os);
             os.close();
 
 //            postParameters = "object_type=" + objectJSON.getString("object_type");
