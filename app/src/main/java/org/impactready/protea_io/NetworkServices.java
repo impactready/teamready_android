@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
@@ -103,7 +104,7 @@ public class NetworkServices {
         String url = "https://impactready.herokuapp.com/api/v1/android/create";
         String userCredentials = "api:" + params;
         String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(), Base64.NO_WRAP));
-        String boundary = "---+++---";
+        String boundary = "---+++---" + System.currentTimeMillis();
 
         try {
             SSLContext sslcontext = SSLContext.getInstance("TLSv1");
@@ -114,24 +115,24 @@ public class NetworkServices {
             HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory);
 
             conn = (HttpsURLConnection) new URL(url).openConnection();
-            conn.setReadTimeout(1000 /* milliseconds */);
-            conn.setConnectTimeout(2000 /* milliseconds */);
+            conn.setReadTimeout(20000 /* milliseconds */);
+            conn.setConnectTimeout(20000 /* milliseconds */);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", basicAuth);
+            conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-            conn.setChunkedStreamingMode(1024);
 
             MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
             reqEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
             reqEntity.setBoundary(boundary);
-            reqEntity.addPart("image", new FileBody(new File(objectJSON.getString("image").substring(7))));
-            reqEntity.addPart("object_type", new StringBody(objectJSON.getString("object_type"), ContentType.TEXT_PLAIN));
-            reqEntity.addPart("object_id", new StringBody(objectJSON.getString("object_id"), ContentType.TEXT_PLAIN));
-            reqEntity.addPart("description", new StringBody(objectJSON.getString("description"), ContentType.TEXT_PLAIN));
-            reqEntity.addPart("type", new StringBody(objectJSON.getString("type"), ContentType.TEXT_PLAIN));
-            reqEntity.addPart("group", new StringBody(objectJSON.getString("group"), ContentType.TEXT_PLAIN));
-            reqEntity.addPart("longitude", new StringBody(objectJSON.getString("longitude"), ContentType.TEXT_PLAIN));
-            reqEntity.addPart("latitude", new StringBody(objectJSON.getString("latitude"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object[image]", new FileBody(new File(objectJSON.getString("image").substring(7))));
+            reqEntity.addPart("object_category", new StringBody(objectJSON.getString("object_type"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object[object_id]", new StringBody(objectJSON.getString("object_id"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object[description]", new StringBody(objectJSON.getString("description"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object[type]", new StringBody(objectJSON.getString("type"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object[group]", new StringBody(objectJSON.getString("group"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object[longitude]", new StringBody(objectJSON.getString("longitude"), ContentType.TEXT_PLAIN));
+            reqEntity.addPart("object[latitude]", new StringBody(objectJSON.getString("latitude"), ContentType.TEXT_PLAIN));
 
 //            conn.setRequestProperty("Content-Length", String.valueOf(reqEntity.build().getContentLength()));
 
@@ -154,7 +155,7 @@ public class NetworkServices {
 //            os.write(postParameters.getBytes("UTF-8"));
 //            os.close();
 
-            int response = conn.getResponseCode();
+//            int response = conn.getResponseCode();
             is = new BufferedInputStream(conn.getInputStream());
 
             InputStreamReader streamReader = new InputStreamReader(is);
