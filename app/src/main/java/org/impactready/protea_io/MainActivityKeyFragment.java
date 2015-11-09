@@ -2,6 +2,7 @@ package org.impactready.protea_io;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -222,9 +223,12 @@ public class MainActivityKeyFragment extends Fragment {
             Context context = getActivity().getApplicationContext();
             Log.d(TAG, "Result is: " + result.toString());
             if (result == 1) {
-                setupLists(context, getView());
                 progress.dismiss();
                 Toast.makeText(context, "Sync complete.", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("keyview", true);
+                getActivity().startActivity(intent);
             } else {
                 progress.dismiss();
                 Toast.makeText(context, "Could not sync data.", Toast.LENGTH_SHORT).show();
