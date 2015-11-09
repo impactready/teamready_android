@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -39,6 +40,7 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
         ImageView deleteView = (ImageView) rowView.findViewById(R.id.item_image_delete);
         TextView textView1 = (TextView) rowView.findViewById(R.id.item_first_line);
         TextView textView2 = (TextView) rowView.findViewById(R.id.item_second_line);
+        TextView uploadView = (TextView) rowView.findViewById(R.id.item_upload_line);
 
 
         if (values[position][0] == "Events" || values[position][0] == "Stories" || values[position][0] == "Measurements") {
@@ -96,13 +98,20 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
             });
         }
 
-        if (values[position][0].length() > 28) {
-            textView1.setText(values[position][0].substring(0, 25) + "...");
+        if (values[position][0].length() > 25) {
+            textView1.setText(values[position][0].substring(0, 22) + "...");
         } else {
             textView1.setText(values[position][0]);
         }
 
-        textView2.setText(values[position][1]);
+        if (values[position][1].length() > 25) {
+            textView2.setText(values[position][1].substring(0, 22) + "...");
+        } else {
+            textView2.setText(values[position][1]);
+        }
+
+        uploadView.setText(values[position][4]);
+
 
         return rowView;
     }

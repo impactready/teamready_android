@@ -33,4 +33,10 @@
     <string name="stories_filename">protea_stories.txt</string>
     <string name="measurements_filename">protea_measurements.txt</string>
 
+
+    <string name="custom_dialog_title">Image not present</string>
+    <string name="custom_dialog_message">You have not attached an image. Continue?</string>
+
+
+
 </resources>

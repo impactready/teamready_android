@@ -7,27 +7,27 @@
     <LinearLayout
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:orientation="vertical">
 
     <EditText
         android:id="@+id/input_key_save"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_marginTop="2dp"
         android:hint="Please enter." />
 
     <Button
         android:id="@+id/button_key_save"
         android:layout_width="fill_parent"
-        android:layout_height="64dp"
+        android:layout_height="70dp"
         android:text="@string/button_key_save"
         android:textSize="18sp"/>
 
     <Button
         android:id="@+id/button_account_setup"
         android:layout_width="fill_parent"
-        android:layout_height="64dp"
+        android:layout_height="70dp"
         android:text="@string/button_account_setup"
         android:textSize="18sp"/>
 

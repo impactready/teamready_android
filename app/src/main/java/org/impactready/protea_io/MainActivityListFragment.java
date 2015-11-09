@@ -27,7 +27,7 @@ public class MainActivityListFragment extends ListFragment {
         int counter = 0;
 
         String[] keys = new String[array_length];
-        String[][] items = new String[array_length][4];
+        String[][] items = new String[array_length][5];
 
         try {
 
@@ -36,7 +36,11 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][1] = "";
             items[counter][2] = "";
             items[counter][3] = "";
-
+            if (eventsJSON.length() == 0 ) {
+                items[counter][4] = "None";
+            } else {
+                items[counter][4] = "";
+            }
 
             if (eventsJSON.length() > 0) {
 
@@ -49,6 +53,11 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][1] = event.getString("type");
                     items[counter][2] = event.getString("image");
                     items[counter][3] = event.getString("object_id");
+                    if (event.getString("uploaded").equals("yes")) {
+                        items[counter][4] = "Uploaded";
+                    } else {
+                        items[counter][4] = "";
+                    }
 
                 }
             }
@@ -60,6 +69,11 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][1] = "";
             items[counter][2] = "";
             items[counter][3] = "";
+            if (storiesJSON.length() == 0 ) {
+                items[counter][4] = "None";
+            } else {
+                items[counter][4] = "";
+            }
 
             if (storiesJSON.length() > 0) {
 
@@ -72,6 +86,11 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][1] = story.getString("type");
                     items[counter][2] = story.getString("image");
                     items[counter][3] = story.getString("object_id");
+                    if (story.getString("uploaded").equals("yes")) {
+                        items[counter][4] = "Uploaded";
+                    } else {
+                        items[counter][4] = "";
+                    }
 
                 }
             }
@@ -84,6 +103,11 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][1] = "";
             items[counter][2] = "";
             items[counter][3] = "";
+            if (measurementsJSON.length() == 0 ) {
+                items[counter][4] = "None";
+            } else {
+                items[counter][4] = "";
+            }
 
             if (measurementsJSON.length() > 0) {
 
@@ -96,7 +120,11 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][1] = measurement.getString("type");
                     items[counter][2] = measurement.getString("image");
                     items[counter][3] = measurement.getString("object_id");
-
+                    if (measurement.getString("uploaded").equals("yes")) {
+                        items[counter][4] = "Uploaded";
+                    } else {
+                        items[counter][4] = "";
+                    }
                 }
             }
 

@@ -47,8 +47,6 @@ public class MainActivityKeyFragment extends Fragment {
     }
 
     public void setUpButtons(final Context context, View view) {
-
-
         Button buttonSaveKey = (Button) view.findViewById(R.id.button_key_save);
         Button buttonSetupKey = (Button) view.findViewById(R.id.button_account_setup);
 

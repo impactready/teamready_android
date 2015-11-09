@@ -1,6 +1,7 @@
 package org.impactready.protea_io;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Criteria;
@@ -11,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -169,29 +173,38 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View b) {
-                        String toaster = null;
-                        Integer rObjectFile = null;
+                        EditText imageText = null;
 
                         if (fragmentType.equals(getString(R.string.event_main_name))) {
-
-                            toaster = "Event saved.";
-                            rObjectFile = R.string.event_main_name;
+                            imageText = (EditText) getView().findViewById(R.id.input_event_image_location);
                         } else if (fragmentType.equals(getString(R.string.story_main_name))) {
-
-                            toaster = "Story saved.";
-                            rObjectFile = R.string.story_main_name;
+                            imageText = (EditText) getView().findViewById(R.id.input_story_image_location);
                         } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
-
-                            toaster = "Measurement saved.";
-                            rObjectFile = R.string.measurement_main_name;
+                            imageText = (EditText) getView().findViewById(R.id.input_measurement_image_location);
                         }
 
-                        JSONObject objectJSON = FormComponents.getAllFormData(v, fragmentType);
-                        FileServices.saveObjectToFile(context, objectJSON, rObjectFile);
+                        if (imageText.getText().toString().equals("")) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                            LayoutInflater inflater = getActivity().getLayoutInflater();
+                            alertDialog.setView(inflater.inflate(R.layout.dialog_custom, null));;
 
-                        Toast.makeText(context, toaster, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
+                            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    saveObject(v);
+                                }
+                            });
+
+                            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            alertDialog.show();
+
+                        } else {
+                            saveObject(v);
+                        }
 
                     }
                 }
@@ -210,6 +223,31 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                     }
                 }
         );
+    }
+
+    public void saveObject(View v) {
+        String toaster = null;
+        Integer rObjectFile = null;
+        Context context = getActivity().getApplicationContext();
+
+        if (fragmentType.equals(getString(R.string.event_main_name))) {
+            toaster = "Event saved.";
+            rObjectFile = R.string.event_main_name;
+        } else if (fragmentType.equals(getString(R.string.story_main_name))) {
+            toaster = "Story saved.";
+            rObjectFile = R.string.story_main_name;
+        } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
+            toaster = "Measurement saved.";
+            rObjectFile = R.string.measurement_main_name;
+        }
+
+        JSONObject objectJSON = FormComponents.getAllFormData(v, fragmentType);
+        FileServices.saveObjectToFile(context, objectJSON, rObjectFile);
+
+        Toast.makeText(context, toaster, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+
     }
 
     @Override
