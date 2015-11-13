@@ -227,7 +227,7 @@ public class MainActivityKeyFragment extends Fragment {
                 Toast.makeText(context, "Sync complete.", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.putExtra("keyview", true);
+                intent.putExtra("listview", true);
                 getActivity().startActivity(intent);
             } else {
                 progress.dismiss();

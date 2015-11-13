@@ -125,7 +125,7 @@ public class NetworkServices {
             MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
             reqEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
             reqEntity.setBoundary(boundary);
-            reqEntity.addPart("object[image]", new FileBody(new File(objectJSON.getString("image").substring(7))));
+            if (objectJSON.getString("image").length() > 0) reqEntity.addPart("object[image]", new FileBody(new File(objectJSON.getString("image").substring(7))));
             reqEntity.addPart("object_category", new StringBody(objectJSON.getString("object_type"), ContentType.TEXT_PLAIN));
             reqEntity.addPart("object[object_id]", new StringBody(objectJSON.getString("object_id"), ContentType.TEXT_PLAIN));
             reqEntity.addPart("object[description]", new StringBody(objectJSON.getString("description"), ContentType.TEXT_PLAIN));
