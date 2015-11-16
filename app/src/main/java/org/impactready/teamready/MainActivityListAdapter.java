@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -35,25 +32,25 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.activity_main_fragment_list_item, parent, false);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.item_image_thumbnail);
-        ImageView deleteView = (ImageView) rowView.findViewById(R.id.item_image_delete);
-        TextView textView1 = (TextView) rowView.findViewById(R.id.item_first_line);
-        TextView textView2 = (TextView) rowView.findViewById(R.id.item_second_line);
-        TextView uploadView = (TextView) rowView.findViewById(R.id.item_upload_line);
+        View rowView = inflater.inflate(org.impactready.teamready.R.layout.activity_main_fragment_list_item, parent, false);
+        ImageView imageView = (ImageView) rowView.findViewById(org.impactready.teamready.R.id.item_image_thumbnail);
+        ImageView deleteView = (ImageView) rowView.findViewById(org.impactready.teamready.R.id.item_image_delete);
+        TextView textView1 = (TextView) rowView.findViewById(org.impactready.teamready.R.id.item_first_line);
+        TextView textView2 = (TextView) rowView.findViewById(org.impactready.teamready.R.id.item_second_line);
+        TextView uploadView = (TextView) rowView.findViewById(org.impactready.teamready.R.id.item_upload_line);
 
 
         if (values[position][0] == "Events" || values[position][0] == "Stories" || values[position][0] == "Measurements") {
 
             switch (values[position][0]) {
                 case "Events":
-                    imageView.setImageResource(R.drawable.image_event);
+                    imageView.setImageResource(org.impactready.teamready.R.drawable.image_event);
                     break;
                 case "Stories":
-                    imageView.setImageResource(R.drawable.image_story);
+                    imageView.setImageResource(org.impactready.teamready.R.drawable.image_story);
                     break;
                 case "Measurements":
-                    imageView.setImageResource(R.drawable.image_measurement);
+                    imageView.setImageResource(org.impactready.teamready.R.drawable.image_measurement);
                     break;
             }
 
@@ -73,9 +70,9 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
 
                     try {
 
-                        Integer files[] = {R.string.events_filename,
-                                R.string.stories_filename,
-                                R.string.measurements_filename};
+                        Integer files[] = {org.impactready.teamready.R.string.events_filename,
+                                org.impactready.teamready.R.string.stories_filename,
+                                org.impactready.teamready.R.string.measurements_filename};
 
                         for (int j = 0; j < files.length; j++) {
 

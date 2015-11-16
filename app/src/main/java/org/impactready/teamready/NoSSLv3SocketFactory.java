@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 /*Copyright 2015 Bhavit Singh Sengar
 Licensed under the Apache License, Version 2.0 (the "License");

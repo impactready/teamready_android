@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -46,14 +44,14 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         fragmentType = this.getArguments().getString("type");
         View v = null;
 
-        if (fragmentType.equals(getString(R.string.event_main_name))) {
-            v =  inflater.inflate(R.layout.activity_form_fragment_event, container, false);
+        if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
+            v =  inflater.inflate(org.impactready.teamready.R.layout.activity_form_fragment_event, container, false);
 
-        } else if (fragmentType.equals(getString(R.string.story_main_name))) {
-            v =  inflater.inflate(R.layout.activity_form_fragment_story, container, false);
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
+            v =  inflater.inflate(org.impactready.teamready.R.layout.activity_form_fragment_story, container, false);
 
-        } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
-            v =  inflater.inflate(R.layout.activity_form_fragment_measurement, container, false);
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
+            v =  inflater.inflate(org.impactready.teamready.R.layout.activity_form_fragment_measurement, container, false);
         }
 
         if (null == (locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)))
@@ -83,25 +81,25 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         Spinner groupSpinner = null;
         List<SpinnerElement> typeList = null;
 
-        JSONArray typesJson = FileServices.getFileJSON(context, R.string.types_filename);
-        JSONArray groupsJson = FileServices.getFileJSON(context, R.string.groups_filename);
+        JSONArray typesJson = FileServices.getFileJSON(context, org.impactready.teamready.R.string.types_filename);
+        JSONArray groupsJson = FileServices.getFileJSON(context, org.impactready.teamready.R.string.groups_filename);
 
         if (fragmentType.equals("event")) {
 
-            typeSpinner = (Spinner) v.findViewById(R.id.input_event_type);
-            groupSpinner = (Spinner) v.findViewById(R.id.input_event_group);
+            typeSpinner = (Spinner) v.findViewById(org.impactready.teamready.R.id.input_event_type);
+            groupSpinner = (Spinner) v.findViewById(org.impactready.teamready.R.id.input_event_group);
             typeList = FormComponents.loadTypeDropdown("Event type", typesJson);
 
-        } else if (fragmentType.equals(getString(R.string.story_main_name))) {
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
 
-            typeSpinner = (Spinner) v.findViewById(R.id.input_story_type);
-            groupSpinner = (Spinner) v.findViewById(R.id.input_story_group);
+            typeSpinner = (Spinner) v.findViewById(org.impactready.teamready.R.id.input_story_type);
+            groupSpinner = (Spinner) v.findViewById(org.impactready.teamready.R.id.input_story_group);
             typeList = FormComponents.loadTypeDropdown("Indicator", typesJson);
 
-        } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
 
-            typeSpinner = (Spinner) v.findViewById(R.id.input_measurement_type);
-            groupSpinner = (Spinner) v.findViewById(R.id.input_measurement_group);
+            typeSpinner = (Spinner) v.findViewById(org.impactready.teamready.R.id.input_measurement_type);
+            groupSpinner = (Spinner) v.findViewById(org.impactready.teamready.R.id.input_measurement_group);
             typeList = FormComponents.loadTypeDropdown("Domain of change", typesJson);
         }
 
@@ -131,20 +129,20 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         EditText longitude = null;
         EditText latitude = null;
 
-        if (fragmentType.equals(getString(R.string.event_main_name))) {
+        if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
 
-            longitude = (EditText) v.findViewById(R.id.input_event_longitude);
-            latitude = (EditText) v.findViewById(R.id.input_event_latitude);
+            longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_event_longitude);
+            latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_event_latitude);
 
-        } else if (fragmentType.equals(getString(R.string.story_main_name))) {
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
 
-            longitude = (EditText) v.findViewById(R.id.input_story_longitude);
-            latitude = (EditText) v.findViewById(R.id.input_story_latitude);
+            longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_story_longitude);
+            latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_story_latitude);
 
-        } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
 
-            longitude = (EditText) v.findViewById(R.id.input_measurement_longitude);
-            latitude = (EditText) v.findViewById(R.id.input_measurement_latitude);
+            longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_measurement_longitude);
+            latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_measurement_latitude);
         }
 
         longitude.setText(String.valueOf(location.getLongitude()));
@@ -156,17 +154,17 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         Button imageButton = null;
 
 
-        if (fragmentType.equals(getString(R.string.event_main_name))) {
-            submitButton = (Button) v.findViewById(R.id.input_event_submit);
-            imageButton = (Button) v.findViewById(R.id.button_event_image);
+        if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
+            submitButton = (Button) v.findViewById(org.impactready.teamready.R.id.input_event_submit);
+            imageButton = (Button) v.findViewById(org.impactready.teamready.R.id.button_event_image);
 
-        } else if (fragmentType.equals(getString(R.string.story_main_name))) {
-            submitButton = (Button) v.findViewById(R.id.input_story_submit);
-            imageButton = (Button) v.findViewById(R.id.button_story_image);
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
+            submitButton = (Button) v.findViewById(org.impactready.teamready.R.id.input_story_submit);
+            imageButton = (Button) v.findViewById(org.impactready.teamready.R.id.button_story_image);
 
-        } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
-            submitButton = (Button) v.findViewById(R.id.input_measurement_submit);
-            imageButton = (Button) v.findViewById(R.id.button_measurement_image);
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
+            submitButton = (Button) v.findViewById(org.impactready.teamready.R.id.input_measurement_submit);
+            imageButton = (Button) v.findViewById(org.impactready.teamready.R.id.button_measurement_image);
         }
 
         submitButton.setOnClickListener(
@@ -175,18 +173,18 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                     public void onClick(View b) {
                         EditText imageText = null;
 
-                        if (fragmentType.equals(getString(R.string.event_main_name))) {
-                            imageText = (EditText) getView().findViewById(R.id.input_event_image_location);
-                        } else if (fragmentType.equals(getString(R.string.story_main_name))) {
-                            imageText = (EditText) getView().findViewById(R.id.input_story_image_location);
-                        } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
-                            imageText = (EditText) getView().findViewById(R.id.input_measurement_image_location);
+                        if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
+                            imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_event_image_location);
+                        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
+                            imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_story_image_location);
+                        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
+                            imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_measurement_image_location);
                         }
 
                         if (imageText.getText().toString().equals("")) {
                             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                             LayoutInflater inflater = getActivity().getLayoutInflater();
-                            alertDialog.setView(inflater.inflate(R.layout.dialog_custom, null));;
+                            alertDialog.setView(inflater.inflate(org.impactready.teamready.R.layout.dialog_custom, null));;
 
                             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -230,15 +228,15 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         Integer rObjectFile = null;
         Context context = getActivity().getApplicationContext();
 
-        if (fragmentType.equals(getString(R.string.event_main_name))) {
+        if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
             toaster = "Event saved.";
-            rObjectFile = R.string.event_main_name;
-        } else if (fragmentType.equals(getString(R.string.story_main_name))) {
+            rObjectFile = org.impactready.teamready.R.string.event_main_name;
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
             toaster = "Story saved.";
-            rObjectFile = R.string.story_main_name;
-        } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
+            rObjectFile = org.impactready.teamready.R.string.story_main_name;
+        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
             toaster = "Measurement saved.";
-            rObjectFile = R.string.measurement_main_name;
+            rObjectFile = org.impactready.teamready.R.string.measurement_main_name;
         }
 
         JSONObject objectJSON = FormComponents.getAllFormData(v, fragmentType);
@@ -277,23 +275,23 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         if (requestCode == IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
 
-                if (fragmentType.equals(getString(R.string.event_main_name))) {
-                    imageView = (ImageView) getView().findViewById(R.id.image_event);
-                    imageText = (EditText) getView().findViewById(R.id.input_event_image_location);
+                if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
+                    imageView = (ImageView) getView().findViewById(org.impactready.teamready.R.id.image_event);
+                    imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_event_image_location);
 
-                } else if (fragmentType.equals(getString(R.string.story_main_name))) {
-                    imageView = (ImageView) getView().findViewById(R.id.image_story);
-                    imageText = (EditText) getView().findViewById(R.id.input_story_image_location);
+                } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
+                    imageView = (ImageView) getView().findViewById(org.impactready.teamready.R.id.image_story);
+                    imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_story_image_location);
 
-                } else if (fragmentType.equals(getString(R.string.measurement_main_name))) {
-                    imageView = (ImageView) getView().findViewById(R.id.image_measurement);
-                    imageText = (EditText) getView().findViewById(R.id.input_measurement_image_location);
+                } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
+                    imageView = (ImageView) getView().findViewById(org.impactready.teamready.R.id.image_measurement);
+                    imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_measurement_image_location);
                 }
 
                 Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation, 400, 6);
                 imageView.setImageBitmap(imageBitmap);
                 ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                params.height = getResources().getDimensionPixelSize(R.dimen.image_view_height);
+                params.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.image_view_height);
                 imageView.setLayoutParams(params);
 
                 imageText.setText(imageLocation.toString());

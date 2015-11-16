@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,9 +20,9 @@ public class MainActivityListFragment extends ListFragment {
         int layout = android.R.layout.simple_list_item_activated_1;
 
 
-        JSONArray eventsJSON = FileServices.getFileJSON(context, R.string.events_filename);
-        JSONArray storiesJSON = FileServices.getFileJSON(context, R.string.stories_filename);
-        JSONArray measurementsJSON = FileServices.getFileJSON(context, R.string.measurements_filename);
+        JSONArray eventsJSON = FileServices.getFileJSON(context, org.impactready.teamready.R.string.events_filename);
+        JSONArray storiesJSON = FileServices.getFileJSON(context, org.impactready.teamready.R.string.stories_filename);
+        JSONArray measurementsJSON = FileServices.getFileJSON(context, org.impactready.teamready.R.string.measurements_filename);
         int array_length = eventsJSON.length() + storiesJSON.length()+ measurementsJSON.length() + 3;
         int counter = 0;
 

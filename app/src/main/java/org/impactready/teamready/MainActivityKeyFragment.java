@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,7 +33,7 @@ public class MainActivityKeyFragment extends Fragment {
                              Bundle savedInstanceState) {
         Context context = getActivity().getApplicationContext();
 
-        View v = inflater.inflate(R.layout.activity_main_fragment_key, container, false);
+        View v = inflater.inflate(org.impactready.teamready.R.layout.activity_main_fragment_key, container, false);
         setApiKey(v);
         setUpButtons(context, v);
         setupLists(context, v);
@@ -41,21 +41,21 @@ public class MainActivityKeyFragment extends Fragment {
     }
 
     public void setApiKey(View v) {
-        TextView apiKey = (TextView) v.findViewById(R.id.input_key_save);
+        TextView apiKey = (TextView) v.findViewById(org.impactready.teamready.R.id.input_key_save);
 
         SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.PREFS_NAME, 0);
         apiKey.setText(settings.getString("apiKey", ""));
     }
 
     public void setUpButtons(final Context context, View view) {
-        Button buttonSaveKey = (Button) view.findViewById(R.id.button_key_save);
-        Button buttonSetupKey = (Button) view.findViewById(R.id.button_account_setup);
+        Button buttonSaveKey = (Button) view.findViewById(org.impactready.teamready.R.id.button_key_save);
+        Button buttonSetupKey = (Button) view.findViewById(org.impactready.teamready.R.id.button_account_setup);
 
         buttonSaveKey.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        TextView apiKey = (TextView) getActivity().findViewById(R.id.input_key_save);
+                        TextView apiKey = (TextView) getActivity().findViewById(org.impactready.teamready.R.id.input_key_save);
 
                         SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.PREFS_NAME, 0);
                         SharedPreferences.Editor editor = settings.edit();
@@ -92,13 +92,13 @@ public class MainActivityKeyFragment extends Fragment {
     }
 
     public void setupLists(Context context, View v) {
-        LinearLayout typesList = (LinearLayout) v.findViewById(R.id.types_list);
-        LinearLayout groupsList = (LinearLayout) v.findViewById(R.id.groups_list);
+        LinearLayout typesList = (LinearLayout) v.findViewById(org.impactready.teamready.R.id.types_list);
+        LinearLayout groupsList = (LinearLayout) v.findViewById(org.impactready.teamready.R.id.groups_list);
         typesList.removeAllViews();
         groupsList.removeAllViews();
 
-        JSONArray typesJson = FileServices.getFileJSON(context, R.string.types_filename);
-        JSONArray groupsJson = FileServices.getFileJSON(context, R.string.groups_filename);
+        JSONArray typesJson = FileServices.getFileJSON(context, org.impactready.teamready.R.string.types_filename);
+        JSONArray groupsJson = FileServices.getFileJSON(context, org.impactready.teamready.R.string.groups_filename);
 
         try {
 
@@ -111,7 +111,7 @@ public class MainActivityKeyFragment extends Fragment {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(3,5,5,0);
-                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.setup_item_height);
+                layoutParams.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.setup_item_height);
                 typeItem.setLayoutParams(layoutParams);
                 typeItem.setBackgroundColor(Color.DKGRAY);
                 typeItem.setTextColor(Color.WHITE);
@@ -128,7 +128,7 @@ public class MainActivityKeyFragment extends Fragment {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(3,5,5,0);
-                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.setup_item_height);
+                layoutParams.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.setup_item_height);
                 groupItem.setLayoutParams(layoutParams);
                 groupItem.setHeight(70);
                 groupItem.setBackgroundColor(Color.DKGRAY);
@@ -150,8 +150,8 @@ public class MainActivityKeyFragment extends Fragment {
         JSONArray typesJSON = allSetupData.getJSONArray("types");
         JSONArray groupsJSON = allSetupData.getJSONArray("groups");
 
-        FileServices.writeFileJson(context, R.string.types_filename, typesJSON);
-        FileServices.writeFileJson(context, R.string.groups_filename, groupsJSON);
+        FileServices.writeFileJson(context, org.impactready.teamready.R.string.types_filename, typesJSON);
+        FileServices.writeFileJson(context, org.impactready.teamready.R.string.groups_filename, groupsJSON);
 
     }
 
@@ -166,20 +166,20 @@ public class MainActivityKeyFragment extends Fragment {
             try {
 
                 // The data upload part
-                Integer files[] = {R.string.events_filename,
-                    R.string.stories_filename,
-                    R.string.measurements_filename};
+                Integer files[] = {org.impactready.teamready.R.string.events_filename,
+                    org.impactready.teamready.R.string.stories_filename,
+                    org.impactready.teamready.R.string.measurements_filename};
 
                 for (int j = 0; j < files.length; j++) {
                     switch (files[j]) {
-                        case R.string.events_filename:
-                            objectType = getString(R.string.event_main_name);
+                        case org.impactready.teamready.R.string.events_filename:
+                            objectType = getString(org.impactready.teamready.R.string.event_main_name);
                             break;
-                        case R.string.stories_filename:
-                            objectType = getString(R.string.story_main_name);
+                        case org.impactready.teamready.R.string.stories_filename:
+                            objectType = getString(org.impactready.teamready.R.string.story_main_name);
                             break;
-                        case R.string.measurements_filename:
-                            objectType = getString(R.string.measurement_main_name);
+                        case org.impactready.teamready.R.string.measurements_filename:
+                            objectType = getString(org.impactready.teamready.R.string.measurement_main_name);
                             break;
 
                     }

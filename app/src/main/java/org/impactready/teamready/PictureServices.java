@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 import android.content.Context;
 import android.graphics.Bitmap;

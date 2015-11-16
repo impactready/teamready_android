@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 import android.location.Location;
 import android.location.LocationManager;
@@ -78,26 +78,26 @@ public class FormComponents {
         Integer fileLocation = null;
 
         if (fragmentType.equals("event")) {
-            description = R.id.input_event_description;
-            type = R.id.input_event_type;
-            group = R.id.input_event_group;
-            longitude = R.id.input_event_longitude;
-            latitude = R.id.input_event_latitude;
-            fileLocation = R.id.input_event_image_location;
+            description = org.impactready.teamready.R.id.input_event_description;
+            type = org.impactready.teamready.R.id.input_event_type;
+            group = org.impactready.teamready.R.id.input_event_group;
+            longitude = org.impactready.teamready.R.id.input_event_longitude;
+            latitude = org.impactready.teamready.R.id.input_event_latitude;
+            fileLocation = org.impactready.teamready.R.id.input_event_image_location;
         } else if (fragmentType.equals("story")) {
-            description = R.id.input_story_description;
-            type = R.id.input_story_type;
-            group = R.id.input_story_group;
-            longitude = R.id.input_story_longitude;
-            latitude = R.id.input_story_latitude;
-            fileLocation = R.id.input_story_image_location;
+            description = org.impactready.teamready.R.id.input_story_description;
+            type = org.impactready.teamready.R.id.input_story_type;
+            group = org.impactready.teamready.R.id.input_story_group;
+            longitude = org.impactready.teamready.R.id.input_story_longitude;
+            latitude = org.impactready.teamready.R.id.input_story_latitude;
+            fileLocation = org.impactready.teamready.R.id.input_story_image_location;
         } else if (fragmentType.equals("measurement")) {
-            description = R.id.input_measurement_description;
-            type = R.id.input_measurement_type;
-            group = R.id.input_measurement_group;
-            longitude = R.id.input_measurement_longitude;
-            latitude = R.id.input_measurement_latitude;
-            fileLocation = R.id.input_measurement_image_location;
+            description = org.impactready.teamready.R.id.input_measurement_description;
+            type = org.impactready.teamready.R.id.input_measurement_type;
+            group = org.impactready.teamready.R.id.input_measurement_group;
+            longitude = org.impactready.teamready.R.id.input_measurement_longitude;
+            latitude = org.impactready.teamready.R.id.input_measurement_latitude;
+            fileLocation = org.impactready.teamready.R.id.input_measurement_image_location;
         }
 
         try {

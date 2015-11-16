@@ -1,4 +1,4 @@
-package org.impactready.protea_io;
+package org.impactready.teamready;
 
 import android.content.Context;
 import android.net.Uri;
@@ -38,22 +38,22 @@ public class FileServices {
 
         try {
             switch (objectType) {
-                case R.string.event_main_name:
-                    objectArray = new JSONArray(readFileJson(context, R.string.events_filename));
+                case org.impactready.teamready.R.string.event_main_name:
+                    objectArray = new JSONArray(readFileJson(context, org.impactready.teamready.R.string.events_filename));
                     objectArray.put(objectJson);
-                    writeFileJson(context, R.string.events_filename, objectArray);
+                    writeFileJson(context, org.impactready.teamready.R.string.events_filename, objectArray);
                     break;
 
-                case R.string.story_main_name:
-                    objectArray = new JSONArray(readFileJson(context, R.string.stories_filename));
+                case org.impactready.teamready.R.string.story_main_name:
+                    objectArray = new JSONArray(readFileJson(context, org.impactready.teamready.R.string.stories_filename));
                     objectArray.put(objectJson);
-                    writeFileJson(context, R.string.stories_filename, objectArray);
+                    writeFileJson(context, org.impactready.teamready.R.string.stories_filename, objectArray);
                     break;
 
-                case R.string.measurement_main_name:
-                    objectArray = new JSONArray(readFileJson(context, R.string.measurements_filename));
+                case org.impactready.teamready.R.string.measurement_main_name:
+                    objectArray = new JSONArray(readFileJson(context, org.impactready.teamready.R.string.measurements_filename));
                     objectArray.put(objectJson);
-                    writeFileJson(context, R.string.measurements_filename, objectArray);
+                    writeFileJson(context, org.impactready.teamready.R.string.measurements_filename, objectArray);
                     break;
             }
 
@@ -95,7 +95,7 @@ public class FileServices {
     public static Uri getOutputMediaFile() {
         File mediaFile = null;
 
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "teamReady");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "teamready");
 
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
