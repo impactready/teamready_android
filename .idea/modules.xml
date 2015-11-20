@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/teamReady.iml" filepath="$PROJECT_DIR$/teamReady.iml" />
+      <module fileurl="file://$PROJECT_DIR$/teamready_android.iml" filepath="$PROJECT_DIR$/teamready_android.iml" />
     </modules>
   </component>
 </project>
