@@ -15,30 +15,32 @@ public class FormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(org.impactready.teamready.R.layout.activity_form);
 
-        String text = getIntent().getStringExtra("type");
-        Log.d(TAG, text);
+        if (savedInstanceState == null) {
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            String text = getIntent().getStringExtra("type");
+            Log.d(TAG, text);
 
-        Bundle bundle = new Bundle();
-        bundle.putString("type", text );
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (text.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
-            getSupportActionBar().setTitle("protea.io : New " + getString(org.impactready.teamready.R.string.event_main_name));
+            Bundle bundle = new Bundle();
+            bundle.putString("type", text);
 
-        } else if (text.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
-            getSupportActionBar().setTitle("protea.io :  New " + getString(org.impactready.teamready.R.string.story_main_name));
+            if (text.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
+                getSupportActionBar().setTitle("protea.io : New " + getString(org.impactready.teamready.R.string.event_main_name));
 
-        } else if (text.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
-            getSupportActionBar().setTitle("protea.io : New " + getString(org.impactready.teamready.R.string.measurement_main_name));
+            } else if (text.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
+                getSupportActionBar().setTitle("protea.io :  New " + getString(org.impactready.teamready.R.string.story_main_name));
+
+            } else if (text.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
+                getSupportActionBar().setTitle("protea.io : New " + getString(org.impactready.teamready.R.string.measurement_main_name));
+            }
+
+            FormActivityFragment fragment = new FormActivityFragment();
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(org.impactready.teamready.R.id.activity_form_container, fragment);
+            fragmentTransaction.commit();
         }
-
-        FormActivityFragment fragment = new FormActivityFragment();
-        fragment.setArguments(bundle);
-        fragmentTransaction.add(org.impactready.teamready.R.id.activity_form_container, fragment);
-        fragmentTransaction.commit();
-
     }
 
 }

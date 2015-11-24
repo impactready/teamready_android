@@ -73,6 +73,9 @@ public class NetworkServices {
         } catch (FileNotFoundException e){
             Log.e(TAG, "FileNotFoundException", e);
             return null;
+        } catch (SocketTimeoutException e){
+            Log.e(TAG, "SocketTimeoutException", e);
+            return null;
         } catch (KeyManagementException e){
             Log.e(TAG, "KeyManagementException", e);
             return null;

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class FormActivityFragment extends Fragment implements LocationListener {
-    private static final String TAG = "Event creation";
+    private static final String TAG = "Object creation";
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int IMAGE_REQUEST_CODE = 100;
     private LocationManager locationManager;
@@ -288,16 +289,20 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                     imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_measurement_image_location);
                 }
 
-                Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation, 400, 6);
-                imageView.setImageBitmap(imageBitmap);
-                ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                params.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.image_view_height);
-                imageView.setLayoutParams(params);
+                if (imageLocation != null) {
+                    Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation, 400, 6);
+                    imageView.setImageBitmap(imageBitmap);
+                    ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                    params.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.image_view_height);
+                    imageView.setLayoutParams(params);
 
-                imageText.setText(imageLocation.toString());
+                    imageText.setText(imageLocation.toString());
 
-                Toast.makeText(getActivity(), "Image saved.", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getActivity(), "Image saved.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e(TAG, "Image location lost");
+                    Toast.makeText(getActivity(), "Image capture failed.", Toast.LENGTH_SHORT).show();
+                }
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Image cancelled.", Toast.LENGTH_SHORT).show();
             } else {
