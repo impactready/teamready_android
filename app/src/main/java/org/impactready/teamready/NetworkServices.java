@@ -136,28 +136,10 @@ public class NetworkServices {
             reqEntity.addPart("object[longitude]", new StringBody(objectJSON.getString("longitude"), ContentType.TEXT_PLAIN));
             reqEntity.addPart("object[latitude]", new StringBody(objectJSON.getString("latitude"), ContentType.TEXT_PLAIN));
 
-//            conn.setRequestProperty("Content-Length", String.valueOf(reqEntity.build().getContentLength()));
-
             OutputStream os = conn.getOutputStream();
             reqEntity.build().writeTo(os);
             os.close();
 
-//            postParameters = "object_type=" + objectJSON.getString("object_type");
-//            postParameters += "&object_id=" + objectJSON.getString("object_id");
-//            postParameters += "&description=" + objectJSON.getString("description");
-//            postParameters += "&type=" + objectJSON.getString("type");
-//            postParameters += "&group=" + objectJSON.getString("group");
-//            postParameters += "&longitude=" + objectJSON.getString("longitude");
-//            postParameters += "&latitude=" + objectJSON.getString("latitude");
-//
-////            postParameters = URLEncoder.encode(postParameters, "UTF-8");
-//            conn.setFixedLengthStreamingMode(
-//                    postParameters.getBytes("UTF-8").length);
-//            OutputStream os = conn.getOutputStream();
-//            os.write(postParameters.getBytes("UTF-8"));
-//            os.close();
-
-//            int response = conn.getResponseCode();
             is = new BufferedInputStream(conn.getInputStream());
 
             InputStreamReader streamReader = new InputStreamReader(is);

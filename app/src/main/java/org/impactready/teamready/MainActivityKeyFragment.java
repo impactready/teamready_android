@@ -113,7 +113,7 @@ public class MainActivityKeyFragment extends Fragment {
                 layoutParams.setMargins(3,5,5,0);
                 layoutParams.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.setup_item_height);
                 typeItem.setLayoutParams(layoutParams);
-                typeItem.setBackgroundColor(Color.DKGRAY);
+                typeItem.setBackgroundColor(Color.GRAY);
                 typeItem.setTextColor(Color.WHITE);
                 typeItem.setGravity(Gravity.CENTER);
                 typesList.addView(typeItem);
@@ -131,7 +131,7 @@ public class MainActivityKeyFragment extends Fragment {
                 layoutParams.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.setup_item_height);
                 groupItem.setLayoutParams(layoutParams);
                 groupItem.setHeight(70);
-                groupItem.setBackgroundColor(Color.DKGRAY);
+                groupItem.setBackgroundColor(Color.GRAY);
                 groupItem.setTextColor(Color.WHITE);
                 groupItem.setGravity(Gravity.CENTER);
                 groupsList.addView(groupItem);
@@ -160,6 +160,7 @@ public class MainActivityKeyFragment extends Fragment {
         protected Integer doInBackground(String... params) {
             Context context = getActivity().getApplicationContext();
             String objectType = null;
+            StringBuilder response = null;
             JSONObject result = null;
             JSONArray objectsJSON = null;
 
@@ -189,12 +190,16 @@ public class MainActivityKeyFragment extends Fragment {
                         JSONObject thisObject = objectsJSON.getJSONObject(i);
                         if (thisObject.getString("uploaded").equals("no")) {
                             thisObject.put("object_type", objectType);
-                            result = new JSONObject(NetworkServices.sendObject(params[0], thisObject).toString());
+                            response = NetworkServices.sendObject(params[0], thisObject);
+                            if (response == null) return 0;
+                            result = new JSONObject(response.toString());
                             if (result.get("result_ok") == true) {
                                 JSONArray newObjectsJSON = JSONServices.remove(objectsJSON, thisObject.getString("object_id"));
                                 thisObject.put("uploaded", "yes");
                                 newObjectsJSON.put(thisObject);
                                 FileServices.writeFileJson(context, files[j], newObjectsJSON);
+                            } else {
+                                return -1;
                             }
                         }
                     }
@@ -229,9 +234,12 @@ public class MainActivityKeyFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("listview", true);
                 getActivity().startActivity(intent);
+            } else if (result == -1) {
+                progress.dismiss();
+                Toast.makeText(context, "Could not sync certain data, fields missing.", Toast.LENGTH_SHORT).show();
             } else {
                 progress.dismiss();
-                Toast.makeText(context, "Could not sync data.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Could not connect to the server.", Toast.LENGTH_SHORT).show();
             }
 
         }
