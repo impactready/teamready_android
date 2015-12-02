@@ -227,21 +227,24 @@ public class MainActivityKeyFragment extends Fragment {
         protected void onPostExecute(Integer result) {
             Context context = getActivity().getApplicationContext();
             Log.d(TAG, "Result is: " + result.toString());
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+
             if (result == 1) {
                 progress.dismiss();
-                Toast.makeText(context, "Sync complete.", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("listview", true);
-                getActivity().startActivity(intent);
+                Toast.makeText(context, "Sync complete.", Toast.LENGTH_SHORT).show();
             } else if (result == -1) {
                 progress.dismiss();
-                Toast.makeText(context, "Could not sync certain data, fields missing.", Toast.LENGTH_SHORT).show();
+                intent.putExtra("captureview", true);
+                Toast.makeText(context, "Could not sync certain items, fields missing.", Toast.LENGTH_SHORT).show();
             } else {
                 progress.dismiss();
+                intent.putExtra("captureview", true);
                 Toast.makeText(context, "Could not connect to the server.", Toast.LENGTH_SHORT).show();
             }
 
+            getActivity().startActivity(intent);
         }
 
     }

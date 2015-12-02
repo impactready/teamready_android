@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setTabActionBar(vpPager);
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        if (settings.getString("apiKey", "").equals("")) {
+        if (settings.getString("apiKey", "").equals("") || getIntent().getBooleanExtra("captureview", false) == true) {
             vpPager.setCurrentItem(API_KEY_VIEW);
         } else if (getIntent().getBooleanExtra("listview", false) == true) {
             vpPager.setCurrentItem(LIST_VIEW);
