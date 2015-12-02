@@ -10,71 +10,77 @@
         android:layout_height="70dp"
         android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/input_key_save"
-        android:layout_width="fill_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="2dp"
-        android:hint="Please enter." />
+        <LinearLayout android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="0px"
+            android:layout_height="0px" >
+            <requestFocus />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/button_key_save"
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:text="@string/button_key_save"
-        android:textSize="18sp"/>
+        <EditText
+            android:id="@+id/input_key_save"
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="2dp"
+            android:hint="Please enter." />
 
-    <Button
-        android:id="@+id/button_account_setup"
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:text="@string/button_account_setup"
-        android:textSize="18sp"/>
+        <Button
+            android:id="@+id/button_key_save"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:text="@string/button_key_save"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/label_groups"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="5dp"
-        android:background="#ffcfcdcb"
-        android:maxLines="10"
-        android:paddingLeft="3dp"
-        android:paddingTop="3dp"
-        android:text="@string/label_groups"
-        android:textColor="#ff000000"
-        android:textSize="15dp"
-        android:textStyle="bold"></TextView>
+        <Button
+            android:id="@+id/button_account_setup"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:text="@string/button_account_setup"
+            android:textSize="18sp"/>
 
-    <LinearLayout
-        android:id="@+id/groups_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="70dp"
-        android:paddingLeft="3dp"
-        android:orientation="vertical"></LinearLayout>
+        <TextView
+            android:id="@+id/label_groups"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="#ffcfcdcb"
+            android:maxLines="10"
+            android:paddingLeft="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/label_groups"
+            android:textColor="#ff000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/label_types"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="5dp"
-        android:background="#ffcfcdcb"
-        android:maxLines="10"
-        android:paddingLeft="3dp"
-        android:paddingTop="3dp"
-        android:text="@string/label_types"
-        android:textColor="#ff000000"
-        android:textSize="15dp"
-        android:textStyle="bold"></TextView>
+        <LinearLayout
+            android:id="@+id/groups_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="70dp"
+            android:paddingLeft="3dp"
+            android:orientation="vertical" />
 
-    <LinearLayout
-        android:id="@+id/types_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/types_label"
-        android:minHeight="70dp"
-        android:paddingLeft="3dp"
-        android:orientation="vertical"></LinearLayout>
+        <TextView
+            android:id="@+id/label_types"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="#ffcfcdcb"
+            android:maxLines="10"
+            android:paddingLeft="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/label_types"
+            android:textColor="#ff000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/types_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="70dp"
+            android:paddingLeft="3dp"
+            android:orientation="vertical" />
 
     </LinearLayout>
 </ScrollView>
