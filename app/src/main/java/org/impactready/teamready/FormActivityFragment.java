@@ -80,9 +80,13 @@ public class FormActivityFragment extends Fragment implements LocationListener {
 
         assignObjectDetails(context, v, action, object);
         setupScrolls(context, v, action, object);
-        if (action.equals("new")) {
-            findLocation(v);
-            locationManager.requestLocationUpdates(provider, 400, 1, this);
+        try {
+            if (action.equals("new") || object.getString("longitude").equals("") || object.getString("latitude").equals("")) {
+                findLocation(v);
+                locationManager.requestLocationUpdates(provider, 400, 1, this);
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
         }
         setOnClickListeners(context, v);
         return v;
