@@ -29,7 +29,7 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(org.impactready.teamready.R.layout.activity_main_fragment_list_item, parent, false);
@@ -40,7 +40,7 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
         TextView uploadView = (TextView) rowView.findViewById(org.impactready.teamready.R.id.item_upload_line);
 
 
-        if (values[position][0] == "Events" || values[position][0] == "Stories" || values[position][0] == "Measurements") {
+        if (values[position][0].equals("Events") || values[position][0].equals("Stories") || values[position][0].equals("Measurements")) {
 
             switch (values[position][0]) {
                 case "Events":
@@ -63,11 +63,8 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
             deleteView.setImageResource(android.R.drawable.ic_delete);
             deleteView.setTag(values[position][3]);
             deleteView.setOnClickListener(new View.OnClickListener() {
-                JSONArray objectsJSON = null;
-
                 @Override
                 public void onClick(View v) {
-
                     try {
 
                         Integer files[] = {org.impactready.teamready.R.string.events_filename,
@@ -76,7 +73,7 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
 
                         for (int j = 0; j < files.length; j++) {
 
-                            objectsJSON = FileServices.getFileJSON(context, files[j]);
+                            JSONArray objectsJSON = FileServices.getFileJSON(context, files[j]);
 
                             JSONArray newObjectsJSON = JSONServices.remove(objectsJSON, v.getTag().toString());
                             FileServices.writeFileJson(context, files[j], newObjectsJSON);
@@ -90,6 +87,21 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
 
                     } catch (IOException e) {
                         Log.e(TAG, "IOException", e);
+                    }
+                }
+            });
+            rowView.setTag(values[position][3]);
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (values[position][5].equals("")) {
+
+                    } else {
+                        Intent intent = new Intent(context, FormActivity.class);
+                        intent.putExtra("object_type", values[position][5]);
+                        intent.putExtra("object_id", v.getTag().toString());
+                        intent.putExtra("action", "edit");
+                        context.startActivity(intent);
                     }
                 }
             });
@@ -108,7 +120,6 @@ public class MainActivityListAdapter extends ArrayAdapter<String> {
         }
 
         uploadView.setText(values[position][4]);
-
 
         return rowView;
     }

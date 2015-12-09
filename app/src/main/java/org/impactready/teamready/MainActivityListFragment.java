@@ -27,7 +27,7 @@ public class MainActivityListFragment extends ListFragment {
         int counter = 0;
 
         String[] keys = new String[array_length];
-        String[][] items = new String[array_length][5];
+        String[][] items = new String[array_length][6];
 
         try {
 
@@ -36,6 +36,7 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][1] = "";
             items[counter][2] = "";
             items[counter][3] = "";
+            items[counter][5] = "";
             if (eventsJSON.length() == 0 ) {
                 items[counter][4] = "None";
             } else {
@@ -53,6 +54,7 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][1] = event.getString("type");
                     items[counter][2] = event.getString("image");
                     items[counter][3] = event.getString("object_id");
+                    items[counter][5] = event.getString("object_type");
                     if (event.getString("uploaded").equals("yes")) {
                         items[counter][4] = "Uploaded";
                     } else {
@@ -69,6 +71,7 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][1] = "";
             items[counter][2] = "";
             items[counter][3] = "";
+            items[counter][5] = "";
             if (storiesJSON.length() == 0 ) {
                 items[counter][4] = "None";
             } else {
@@ -86,6 +89,7 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][1] = story.getString("type");
                     items[counter][2] = story.getString("image");
                     items[counter][3] = story.getString("object_id");
+                    items[counter][5] = story.getString("object_type");
                     if (story.getString("uploaded").equals("yes")) {
                         items[counter][4] = "Uploaded";
                     } else {
@@ -103,6 +107,7 @@ public class MainActivityListFragment extends ListFragment {
             items[counter][1] = "";
             items[counter][2] = "";
             items[counter][3] = "";
+            items[counter][5] = "";
             if (measurementsJSON.length() == 0 ) {
                 items[counter][4] = "None";
             } else {
@@ -120,6 +125,7 @@ public class MainActivityListFragment extends ListFragment {
                     items[counter][1] = measurement.getString("type");
                     items[counter][2] = measurement.getString("image");
                     items[counter][3] = measurement.getString("object_id");
+                    items[counter][5] = measurement.getString("object_type");
                     if (measurement.getString("uploaded").equals("yes")) {
                         items[counter][4] = "Uploaded";
                     } else {

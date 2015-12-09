@@ -25,42 +25,65 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.UUID;
 
 public class FormActivityFragment extends Fragment implements LocationListener {
-    private static final String TAG = "Object creation";
+    private static final String TAG = "Object creation/edit";
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int IMAGE_REQUEST_CODE = 100;
     private LocationManager locationManager;
     private String provider;
     private String fragmentType;
+    private String action;
+    private String objectId;
     private Uri imageLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Context context = getActivity().getApplicationContext();
-        fragmentType = this.getArguments().getString("type");
+        fragmentType = this.getArguments().getString("object_type");
+        objectId = this.getArguments().getString("object_id");
+        action = this.getArguments().getString("action");
+
         View v = null;
+        JSONArray objectsJSON;
+        JSONObject object = null;
+        int filename = 0;
 
         if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
             v =  inflater.inflate(org.impactready.teamready.R.layout.activity_form_fragment_event, container, false);
+            filename = org.impactready.teamready.R.string.events_filename;
 
         } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
             v =  inflater.inflate(org.impactready.teamready.R.layout.activity_form_fragment_story, container, false);
+            filename = R.string.stories_filename;
+
 
         } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
             v =  inflater.inflate(org.impactready.teamready.R.layout.activity_form_fragment_measurement, container, false);
+            filename = R.string.measurements_filename;
+
+        }
+
+        if (action.equals("edit") && filename != 0) {
+            objectsJSON = FileServices.getFileJSON(context, filename);
+            object = JSONServices.find(objectsJSON, objectId);
         }
 
         if (null == (locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)))
             getActivity().finish();
 
-        setupScrolls(context, v);
-        findLocation(v);
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
+        assignObjectDetails(context, v, action, object);
+        setupScrolls(context, v, action, object);
+        if (action.equals("new")) {
+            findLocation(v);
+            locationManager.requestLocationUpdates(provider, 400, 1, this);
+        }
         setOnClickListeners(context, v);
         return v;
     }
@@ -68,7 +91,11 @@ public class FormActivityFragment extends Fragment implements LocationListener {
     @Override
     public void onResume() {
         super.onResume();
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
+        action = this.getArguments().getString("action");
+
+        if (action.equals("new")) {
+            locationManager.requestLocationUpdates(provider, 400, 1, this);
+        }
     }
 
     @Override
@@ -77,10 +104,40 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         locationManager.removeUpdates((LocationListener) this);
     }
 
-    public void setupScrolls (Context context, View v) {
+    private void assignObjectDetails(Context context, View v, String action, JSONObject object) {
+        EditText objectId = (EditText) v.findViewById(R.id.input_object_id);
+        EditText objectType = (EditText) v.findViewById(R.id.input_object_type);
+
+        if (action.equals("new")) {
+            objectId.setText(UUID.randomUUID().toString());
+            objectType.setText(fragmentType);
+        } else {
+            try {
+                EditText longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_longitude);
+                EditText latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_latitude);
+                EditText description = (EditText) v.findViewById(org.impactready.teamready.R.id.input_description);
+                ImageView imageView = (ImageView) v.findViewById(org.impactready.teamready.R.id.image_object);
+                EditText imageText = (EditText) v.findViewById(org.impactready.teamready.R.id.input_image_location);
+
+                objectId.setText(object.getString("object_id"));
+                objectType.setText(object.getString("object_type"));
+                description.setText(object.getString("description"));
+                longitude.setText(object.getString("longitude"));
+                latitude.setText(object.getString("latitude"));
+
+                setViewImageAndLocation(context, imageView, imageText, object.getString("image"));
+
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+            }
+        }
+
+    }
+
+    private void setupScrolls (Context context, View v, String action, JSONObject object) {
         Spinner typeSpinner = null;
         Spinner groupSpinner = null;
-        List<SpinnerElement> typeList = null;
+        List<String> typeList = null;
 
         JSONArray typesJson = FileServices.getFileJSON(context, org.impactready.teamready.R.string.types_filename);
         JSONArray groupsJson = FileServices.getFileJSON(context, org.impactready.teamready.R.string.groups_filename);
@@ -104,21 +161,28 @@ public class FormActivityFragment extends Fragment implements LocationListener {
             typeList = FormComponents.loadTypeDropdown("Domain of change", typesJson);
         }
 
-        List<SpinnerElement> groupList = FormComponents.loadGroupDropdown(groupsJson);
+        List<String> groupList = FormComponents.loadGroupDropdown(groupsJson);
 
-        ArrayAdapter<SpinnerElement> typeAdapter = new ArrayAdapter<SpinnerElement>(this.getActivity(),
-                android.R.layout.simple_spinner_item, typeList);
-        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, typeList);
         typeSpinner.setAdapter(typeAdapter);
 
-        ArrayAdapter<SpinnerElement> groupAdapter = new ArrayAdapter<SpinnerElement>(this.getActivity(),
-                android.R.layout.simple_spinner_item, groupList);
-        groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> groupAdapter = new ArrayAdapter<>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, groupList);
         groupSpinner.setAdapter(groupAdapter);
+
+        if (action.equals("edit")) {
+            try {
+                typeSpinner.setSelection(typeAdapter.getPosition(object.getString("type")));
+                groupSpinner.setSelection(groupAdapter.getPosition(object.getString("group")));
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+            }
+        }
 
     }
 
-    public void findLocation(View v) {
+    private void findLocation(View v) {
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
         Location finalLocation = FormComponents.getLocation(locationManager, provider);
@@ -126,31 +190,18 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         if (finalLocation != null) updateFieldsWithLocation(finalLocation, v);
     }
 
-    public void updateFieldsWithLocation(Location location, View v) {
-        EditText longitude = null;
-        EditText latitude = null;
+    private void updateFieldsWithLocation(Location location, View v) {
+        EditText longitude;
+        EditText latitude;
 
-        if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
-
-            longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_event_longitude);
-            latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_event_latitude);
-
-        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
-
-            longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_story_longitude);
-            latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_story_latitude);
-
-        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
-
-            longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_measurement_longitude);
-            latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_measurement_latitude);
-        }
+        longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_longitude);
+        latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_latitude);
 
         longitude.setText(String.valueOf(location.getLongitude()));
         latitude.setText(String.valueOf(location.getLatitude()));
     }
 
-    public void setOnClickListeners(final Context context, final View v) {
+    private void setOnClickListeners(final Context context, final View v) {
         Button submitButton = null;
         Button imageButton = null;
 
@@ -172,20 +223,14 @@ public class FormActivityFragment extends Fragment implements LocationListener {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View b) {
-                        EditText imageText = null;
+                        EditText imageText;
 
-                        if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
-                            imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_event_image_location);
-                        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
-                            imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_story_image_location);
-                        } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
-                            imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_measurement_image_location);
-                        }
+                        imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_image_location);
 
                         if (imageText.getText().toString().equals("")) {
                             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                             LayoutInflater inflater = getActivity().getLayoutInflater();
-                            alertDialog.setView(inflater.inflate(org.impactready.teamready.R.layout.dialog_custom, null));;
+                            alertDialog.setView(inflater.inflate(org.impactready.teamready.R.layout.dialog_custom, null));
 
                             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -224,7 +269,7 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         );
     }
 
-    public void saveObject(View v) {
+    private void saveObject(View v) {
         String toaster = null;
         Integer rObjectFile = null;
         Context context = getActivity().getApplicationContext();
@@ -249,6 +294,15 @@ public class FormActivityFragment extends Fragment implements LocationListener {
 
     }
 
+    private void setViewImageAndLocation(Context context, ImageView imageView, EditText imageText, String url) {
+        Bitmap imageBitmap = PictureServices.setPicture(context, Uri.parse(url), 400, 6);
+        imageView.setImageBitmap(imageBitmap);
+        ViewGroup.LayoutParams params = imageView.getLayoutParams();
+        params.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.image_view_height);
+        imageView.setLayoutParams(params);
+        imageText.setText(url);
+    }
+
     @Override
     public void onLocationChanged(Location location) {
 
@@ -269,35 +323,18 @@ public class FormActivityFragment extends Fragment implements LocationListener {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ImageView imageView = null;
-        EditText imageText= null;
+        ImageView imageView;
+        EditText imageText;
         Context context = getActivity().getApplicationContext();
 
         if (requestCode == IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
 
-                if (fragmentType.equals(getString(org.impactready.teamready.R.string.event_main_name))) {
-                    imageView = (ImageView) getView().findViewById(org.impactready.teamready.R.id.image_event);
-                    imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_event_image_location);
-
-                } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.story_main_name))) {
-                    imageView = (ImageView) getView().findViewById(org.impactready.teamready.R.id.image_story);
-                    imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_story_image_location);
-
-                } else if (fragmentType.equals(getString(org.impactready.teamready.R.string.measurement_main_name))) {
-                    imageView = (ImageView) getView().findViewById(org.impactready.teamready.R.id.image_measurement);
-                    imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_measurement_image_location);
-                }
+                imageView = (ImageView) getView().findViewById(org.impactready.teamready.R.id.image_object);
+                imageText = (EditText) getView().findViewById(org.impactready.teamready.R.id.input_image_location);
 
                 if (imageLocation != null) {
-                    Bitmap imageBitmap = PictureServices.setPicture(context, imageLocation, 400, 6);
-                    imageView.setImageBitmap(imageBitmap);
-                    ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                    params.height = getResources().getDimensionPixelSize(org.impactready.teamready.R.dimen.image_view_height);
-                    imageView.setLayoutParams(params);
-
-                    imageText.setText(imageLocation.toString());
-
+                    setViewImageAndLocation(context, imageView, imageText, imageLocation.toString());
                     Toast.makeText(getActivity(), "Image saved.", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "Image location lost");

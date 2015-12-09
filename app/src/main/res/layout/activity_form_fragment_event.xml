@@ -21,7 +21,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/image_event"
+            android:id="@+id/image_object"
             android:scaleType="centerCrop"
             android:contentDescription="Event image"/>
 
@@ -35,7 +35,7 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/input_event_description"
+            android:id="@+id/input_description"
             android:paddingLeft="2dp"
             android:paddingTop="4dp" />
 
@@ -79,7 +79,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/input_event_longitude"
+            android:id="@+id/input_longitude"
             android:paddingLeft="2dp"
             android:paddingTop="4dp" />
 
@@ -93,7 +93,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/input_event_latitude"
+            android:id="@+id/input_latitude"
             android:paddingLeft="2dp"
             android:paddingTop="4dp" />
 
@@ -108,8 +108,19 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:id="@+id/input_event_image_location" />
+            android:id="@+id/input_image_location" />
 
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:id="@+id/input_object_id" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:id="@+id/input_object_type" />
 
     </LinearLayout>
 </ScrollView>

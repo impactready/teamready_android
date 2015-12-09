@@ -14,15 +14,34 @@ public class JSONServices {
         try {
             JSONArray newObjectsJSON = new JSONArray();
             int len = objectsJSON.length();
-            if (objectsJSON != null) {
-                for (int i = 0; i < len; i++) {
-                    JSONObject thisObject = objectsJSON.getJSONObject(i);
-                    if (!thisObject.getString("object_id").equals(id)) {
-                        newObjectsJSON.put(thisObject);
-                    }
+
+            for (int i = 0; i < len; i++) {
+                JSONObject thisObject = objectsJSON.getJSONObject(i);
+                if (!thisObject.getString("object_id").equals(id)) {
+                    newObjectsJSON.put(thisObject);
                 }
             }
             return newObjectsJSON;
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            return null;
+        }
+    }
+
+    public static JSONObject find(JSONArray objectsJSON, String id) {
+        try {
+
+            if (objectsJSON != null) {
+                int len = objectsJSON.length();
+                for (int i = 0; i < len; i++) {
+                    JSONObject thisObject = objectsJSON.getJSONObject(i);
+                    if (thisObject.getString("object_id").equals(id)) {
+                        return thisObject;
+                    }
+                }
+
+            }
+            return null;
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
             return null;

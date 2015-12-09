@@ -17,14 +17,14 @@ import java.util.UUID;
 public class FormComponents {
     private static final String TAG = "Form Components";
 
-    public static ArrayList<SpinnerElement> loadTypeDropdown(String typeDescription, JSONArray typesJson) {
-        ArrayList<SpinnerElement> typeList = new ArrayList<SpinnerElement>();
+    public static ArrayList<String> loadTypeDropdown(String typeDescription, JSONArray typesJson) {
+        ArrayList<String> typeList = new ArrayList<>();
         try {
 
             for (int i = 0; i < typesJson.length(); i++) {
                 JSONObject type = typesJson.getJSONObject(i);
                 if (type.getString("usage").equals(typeDescription)) {
-                    typeList.add(new SpinnerElement(type.getString("description"),type.getString("id")));
+                    typeList.add(type.getString("description"));
                 }
 
             }
@@ -35,13 +35,13 @@ public class FormComponents {
         return typeList;
     }
 
-    public static ArrayList<SpinnerElement> loadGroupDropdown(JSONArray groupsJson) {
-        ArrayList<SpinnerElement> groupList = new ArrayList<SpinnerElement>();
+    public static ArrayList<String> loadGroupDropdown(JSONArray groupsJson) {
+        ArrayList<String> groupList = new ArrayList<>();
         try {
 
             for (int i = 0; i < groupsJson.length(); i++) {
                 JSONObject group = groupsJson.getJSONObject(i);
-                groupList.add(new SpinnerElement(group.getString("name"), group.getString("id")));
+                groupList.add(group.getString("name"));
             }
 
         } catch (JSONException e) {
@@ -59,8 +59,6 @@ public class FormComponents {
             float accuracy = location.getAccuracy();
             if (accuracy < bestAccuracy) {
                 finalLocation = location;
-                bestAccuracy = accuracy;
-
             }
         }
 
@@ -70,35 +68,32 @@ public class FormComponents {
 
     public static JSONObject getAllFormData(View v, String fragmentType) {
         JSONObject eventJson = new JSONObject();
-        Integer description = null;
+        Integer description;
         Integer type = null;
         Integer group = null;
-        Integer longitude = null;
-        Integer latitude = null;
-        Integer fileLocation = null;
+        Integer longitude;
+        Integer latitude;
+        Integer fileLocation;
+        Integer object_id;
+        String object_type;
 
         if (fragmentType.equals("event")) {
-            description = org.impactready.teamready.R.id.input_event_description;
             type = org.impactready.teamready.R.id.input_event_type;
             group = org.impactready.teamready.R.id.input_event_group;
-            longitude = org.impactready.teamready.R.id.input_event_longitude;
-            latitude = org.impactready.teamready.R.id.input_event_latitude;
-            fileLocation = org.impactready.teamready.R.id.input_event_image_location;
         } else if (fragmentType.equals("story")) {
-            description = org.impactready.teamready.R.id.input_story_description;
             type = org.impactready.teamready.R.id.input_story_type;
             group = org.impactready.teamready.R.id.input_story_group;
-            longitude = org.impactready.teamready.R.id.input_story_longitude;
-            latitude = org.impactready.teamready.R.id.input_story_latitude;
-            fileLocation = org.impactready.teamready.R.id.input_story_image_location;
         } else if (fragmentType.equals("measurement")) {
-            description = org.impactready.teamready.R.id.input_measurement_description;
             type = org.impactready.teamready.R.id.input_measurement_type;
             group = org.impactready.teamready.R.id.input_measurement_group;
-            longitude = org.impactready.teamready.R.id.input_measurement_longitude;
-            latitude = org.impactready.teamready.R.id.input_measurement_latitude;
-            fileLocation = org.impactready.teamready.R.id.input_measurement_image_location;
         }
+
+        fileLocation = org.impactready.teamready.R.id.input_image_location;
+        description = org.impactready.teamready.R.id.input_description;
+        longitude = org.impactready.teamready.R.id.input_longitude;
+        latitude = org.impactready.teamready.R.id.input_latitude;
+        object_id = org.impactready.teamready.R.id.input_object_id;
+        object_type = fragmentType;
 
         try {
             eventJson.put("description", ((EditText) v.findViewById(description)).getText());
@@ -107,7 +102,8 @@ public class FormComponents {
             eventJson.put("longitude", ((EditText) v.findViewById(longitude)).getText());
             eventJson.put("latitude", ((EditText) v.findViewById(latitude)).getText());
             eventJson.put("image", ((EditText) v.findViewById(fileLocation)).getText());
-            eventJson.put("object_id", UUID.randomUUID().toString());
+            eventJson.put("object_id", ((EditText) v.findViewById(object_id)).getText());
+            eventJson.put("object_type", object_type);
             eventJson.put("uploaded", "no");
 
         } catch (JSONException e) {

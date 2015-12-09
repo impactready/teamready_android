@@ -34,26 +34,30 @@ public class FileServices {
     }
 
     public static void saveObjectToFile(Context context, JSONObject objectJson, Integer objectType) {
-        JSONArray objectArray;
+        JSONArray objectArray = null;
+        JSONArray newObjectArray = null;
 
         try {
             switch (objectType) {
                 case org.impactready.teamready.R.string.event_main_name:
                     objectArray = new JSONArray(readFileJson(context, org.impactready.teamready.R.string.events_filename));
-                    objectArray.put(objectJson);
-                    writeFileJson(context, org.impactready.teamready.R.string.events_filename, objectArray);
+                    newObjectArray = JSONServices.remove(objectArray, objectJson.getString("object_id"));
+                    newObjectArray.put(objectJson);
+                    writeFileJson(context, org.impactready.teamready.R.string.events_filename, newObjectArray);
                     break;
 
                 case org.impactready.teamready.R.string.story_main_name:
                     objectArray = new JSONArray(readFileJson(context, org.impactready.teamready.R.string.stories_filename));
-                    objectArray.put(objectJson);
-                    writeFileJson(context, org.impactready.teamready.R.string.stories_filename, objectArray);
+                    newObjectArray = JSONServices.remove(objectArray, objectJson.getString("object_id"));
+                    newObjectArray.put(objectJson);
+                    writeFileJson(context, org.impactready.teamready.R.string.stories_filename, newObjectArray);
                     break;
 
                 case org.impactready.teamready.R.string.measurement_main_name:
                     objectArray = new JSONArray(readFileJson(context, org.impactready.teamready.R.string.measurements_filename));
-                    objectArray.put(objectJson);
-                    writeFileJson(context, org.impactready.teamready.R.string.measurements_filename, objectArray);
+                    newObjectArray = JSONServices.remove(objectArray, objectJson.getString("object_id"));
+                    newObjectArray.put(objectJson);
+                    writeFileJson(context, org.impactready.teamready.R.string.measurements_filename, newObjectArray);
                     break;
             }
 
@@ -93,8 +97,6 @@ public class FileServices {
 
 
     public static Uri getOutputMediaFile() {
-        File mediaFile = null;
-
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "teamready");
 
         if (! mediaStorageDir.exists()){
@@ -104,7 +106,7 @@ public class FileServices {
             }
         }
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
 
         return Uri.fromFile(mediaFile);
 

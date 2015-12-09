@@ -34,7 +34,8 @@ public class MainActivityCaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra("type", getString(org.impactready.teamready.R.string.event_main_name));
+                        intent.putExtra("object_type", getString(org.impactready.teamready.R.string.event_main_name));
+                        intent.putExtra("action", "new");
                         startActivity(intent);
                     }
                 }
@@ -45,7 +46,8 @@ public class MainActivityCaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra("type", getString(org.impactready.teamready.R.string.story_main_name));
+                        intent.putExtra("object_type", getString(org.impactready.teamready.R.string.story_main_name));
+                        intent.putExtra("action", "new");
                         startActivity(intent);
                     }
                 }
@@ -56,7 +58,8 @@ public class MainActivityCaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra("type", getString(org.impactready.teamready.R.string.measurement_main_name));
+                        intent.putExtra("object_type", getString(org.impactready.teamready.R.string.measurement_main_name));
+                        intent.putExtra("action", "new");
                         startActivity(intent);
                     }
                 }

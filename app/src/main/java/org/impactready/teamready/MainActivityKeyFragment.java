@@ -159,10 +159,9 @@ public class MainActivityKeyFragment extends Fragment {
 
         protected Integer doInBackground(String... params) {
             Context context = getActivity().getApplicationContext();
-            String objectType = null;
-            StringBuilder response = null;
-            JSONObject result = null;
-            JSONArray objectsJSON = null;
+            StringBuilder response;
+            JSONObject result;
+            JSONArray objectsJSON;
 
             try {
 
@@ -172,24 +171,11 @@ public class MainActivityKeyFragment extends Fragment {
                     org.impactready.teamready.R.string.measurements_filename};
 
                 for (int j = 0; j < files.length; j++) {
-                    switch (files[j]) {
-                        case org.impactready.teamready.R.string.events_filename:
-                            objectType = getString(org.impactready.teamready.R.string.event_main_name);
-                            break;
-                        case org.impactready.teamready.R.string.stories_filename:
-                            objectType = getString(org.impactready.teamready.R.string.story_main_name);
-                            break;
-                        case org.impactready.teamready.R.string.measurements_filename:
-                            objectType = getString(org.impactready.teamready.R.string.measurement_main_name);
-                            break;
-
-                    }
 
                     objectsJSON = FileServices.getFileJSON(context, files[j]);
                     for (int i = 0; i < objectsJSON.length(); i++) {
                         JSONObject thisObject = objectsJSON.getJSONObject(i);
                         if (thisObject.getString("uploaded").equals("no")) {
-                            thisObject.put("object_type", objectType);
                             response = NetworkServices.sendObject(params[0], thisObject);
                             if (response == null) return 0;
                             result = new JSONObject(response.toString());
