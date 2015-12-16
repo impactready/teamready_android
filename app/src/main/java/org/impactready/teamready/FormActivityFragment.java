@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -83,7 +83,8 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         try {
             if (action.equals("new") || object.getString("longitude").equals("") || object.getString("latitude").equals("")) {
                 findLocation(v);
-                locationManager.requestLocationUpdates(provider, 400, 1, this);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, this);
             }
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
@@ -98,7 +99,8 @@ public class FormActivityFragment extends Fragment implements LocationListener {
         action = this.getArguments().getString("action");
 
         if (action.equals("new")) {
-            locationManager.requestLocationUpdates(provider, 400, 1, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, this);
         }
     }
 
@@ -117,8 +119,8 @@ public class FormActivityFragment extends Fragment implements LocationListener {
             objectType.setText(fragmentType);
         } else {
             try {
-                EditText longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_longitude);
-                EditText latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_latitude);
+                TextView longitude = (TextView) v.findViewById(org.impactready.teamready.R.id.input_longitude);
+                TextView latitude = (TextView) v.findViewById(org.impactready.teamready.R.id.input_latitude);
                 EditText description = (EditText) v.findViewById(org.impactready.teamready.R.id.input_description);
                 ImageView imageView = (ImageView) v.findViewById(org.impactready.teamready.R.id.image_object);
                 EditText imageText = (EditText) v.findViewById(org.impactready.teamready.R.id.input_image_location);
@@ -187,19 +189,14 @@ public class FormActivityFragment extends Fragment implements LocationListener {
     }
 
     private void findLocation(View v) {
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        Location finalLocation = FormComponents.getLocation(locationManager, provider);
-
+        Location finalLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (finalLocation == null) finalLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if (finalLocation != null) updateFieldsWithLocation(finalLocation, v);
     }
 
     private void updateFieldsWithLocation(Location location, View v) {
-        EditText longitude;
-        EditText latitude;
-
-        longitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_longitude);
-        latitude = (EditText) v.findViewById(org.impactready.teamready.R.id.input_latitude);
+        TextView longitude = (TextView) v.findViewById(org.impactready.teamready.R.id.input_longitude);
+        TextView latitude = (TextView) v.findViewById(org.impactready.teamready.R.id.input_latitude);
 
         longitude.setText(String.valueOf(location.getLongitude()));
         latitude.setText(String.valueOf(location.getLatitude()));

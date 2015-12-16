@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,8 +100,8 @@ public class FormComponents {
             eventJson.put("description", ((EditText) v.findViewById(description)).getText());
             eventJson.put("type", ((Spinner) v.findViewById(type)).getSelectedItem());
             eventJson.put("group", ((Spinner) v.findViewById(group)).getSelectedItem());
-            eventJson.put("longitude", ((EditText) v.findViewById(longitude)).getText());
-            eventJson.put("latitude", ((EditText) v.findViewById(latitude)).getText());
+            eventJson.put("longitude", ((TextView) v.findViewById(longitude)).getText());
+            eventJson.put("latitude", ((TextView) v.findViewById(latitude)).getText());
             eventJson.put("image", ((EditText) v.findViewById(fileLocation)).getText());
             eventJson.put("object_id", ((EditText) v.findViewById(object_id)).getText());
             eventJson.put("object_type", object_type);
